@@ -6,71 +6,93 @@ CREATE TABLE Users (
 
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_number TEXT NOT NULL UNIQUE, -- Уникальный номер пользователя
-    abbreviation TEXT NOT NULL, -- Аббревиатура пользователя
-    
-    -- Проверки
-    CHECK(length(user_number) > 0),
-    CHECK(length(abbreviation) > 0)
-);
+    abbreviation TEXT -- Аббревиатура пользователя
+    );
 
 CREATE TABLE Departments (
 -- Таблица подразделений инициатора
 
     department_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE -- Название подразделения
+    name TEXT, -- Название подразделения
+    synonym TEXT -- Синоним/сокращенное название
 );
 
-CREATE TABLE Initiators (
--- Таблица инициаторов заданий
+CREATE TABLE Employees (
+-- Таблица сотрудников
 
-    initiator_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    employee_name TEXT NOT NULL, -- ФИО сотрудника
-    feedback_number TEXT, -- Номер для обратной связи
+    employee_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT, -- ФИО сотрудника
+    employee_number TEXT NOT NULL, -- Номер сотрудника
+    synonym TEXT, -- Синоним/сокращенное название
     department_id INTEGER NOT NULL, -- Подразделение
     
     FOREIGN KEY (department_id) REFERENCES Departments(department_id)
 );
 
-CREATE TABLE Themes (
--- Таблица тематик заданий
-
-    theme_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    description TEXT NOT NULL UNIQUE -- Описание тематики
-);
-
-CREATE TABLE Topics (
--- Таблица тем
-
-    topic_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    description TEXT NOT NULL UNIQUE -- Описание темы
-
-);
-
-CREATE TABLE TaskTypes (
--- Таблица типов заданий
-
-    type_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type_name TEXT NOT NULL UNIQUE, -- Название типа задания
-    description TEXT -- Описание типа
+CREATE TABLE TaskSubjects (
+-- Таблица тем заданий
+    subject_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE -- Название темы
 );
 
 CREATE TABLE Tasks (
 -- Таблица заданий
-
     task_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    task_number TEXT NOT NULL UNIQUE, -- Номер задания
     start_date DATE NOT NULL, -- Дата создания
-    end_date DATE, -- Дата создания
-    comment TEXT, -- Комментарий к заданию
-    executor_id INTEGER NOT NULL, -- Исполнитель
-    initiator_id INTEGER NOT NULL, -- Инициатор
-    type_id INTEGER NOT NULL, -- Тип задания
-    theme_id INTEGER, -- Тема задания
+    end_date DATE, -- Дата завершения
+    user_id INTEGER NOT NULL, -- Исполнитель
+    subject_id INTEGER NOT NULL, -- Тема задания
     
-    FOREIGN KEY (executor_id) REFERENCES Users(user_id),
-    FOREIGN KEY (initiator_id) REFERENCES Initiators(initiator_id),
-    FOREIGN KEY (type_id) REFERENCES TaskTypes(type_id),
-    FOREIGN KEY (theme_id) REFERENCES Themes(theme_id)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (subject_id) REFERENCES TaskSubjects(subject_id)
+);
+
+-- Таблица типов связей между заданиями
+CREATE TABLE TaskRelationTypes (
+    relation_type_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE -- Название типа связи
+);
+
+CREATE TABLE IncomingTypes (
+-- Таблица типов входящих документов
+    type_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE -- Название типа
+);
+
+CREATE TABLE OutgoingTypes (
+-- Таблица типов исходящих документов
+    type_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE -- Название типа
+);
+
+CREATE TABLE Incoming (
+-- Таблица входящих документов
+    incoming_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date DATE NOT NULL, -- Дата регистрации
+    reg_number TEXT NOT NULL, -- Регистрационный номер
+    department_id INTEGER NOT NULL, -- Подразделение
+    employee_id INTEGER NOT NULL, -- Ответственный сотрудник
+    type_id INTEGER NOT NULL, -- Тип документа
+    
+    FOREIGN KEY (department_id) REFERENCES Departments(department_id),
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
+    FOREIGN KEY (type_id) REFERENCES IncomingTypes(type_id),
+    UNIQUE(date, reg_number)
+);
+
+CREATE TABLE Outgoing (
+-- Таблица исходящих документов
+    outgoing_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date DATE NOT NULL,               -- Дата регистрации
+    reg_number TEXT NOT NULL,         -- Регистрационный номер
+    department_id INTEGER NOT NULL,   -- Подразделение
+    employee_id INTEGER NOT NULL,     -- Ответственный сотрудник
+    type_id INTEGER NOT NULL,         -- Тип документа
+    
+    FOREIGN KEY (department_id) REFERENCES Departments(department_id),
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
+    FOREIGN KEY (type_id) REFERENCES OutgoingTypes(type_id),
+    UNIQUE(date, reg_number)
 );
 
 CREATE TABLE Countries (
@@ -102,6 +124,14 @@ CREATE TABLE Cities (
     FOREIGN KEY (region_id) REFERENCES Regions(region_id),
     FOREIGN KEY (country_id) REFERENCES Countries(country_id),
     UNIQUE(name, region_id)
+);
+
+CREATE TABLE Topics (
+-- Таблица тем
+
+    topic_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    description TEXT NOT NULL UNIQUE -- Описание темы
+
 );
 
 CREATE TABLE Persons (
@@ -430,6 +460,49 @@ CREATE TABLE DataBaseVersion (
 );
 
 -- ===================== СВЯЗУЮЩИЕ ТАБЛИЦЫ =====================
+
+CREATE TABLE IncomingOutgoing (
+-- Связь входящих и исходящих документов
+    incoming_id INTEGER NOT NULL, -- Входящий документ
+    outgoing_id INTEGER NOT NULL, -- Исходящий документ
+    
+    PRIMARY KEY (incoming_id, outgoing_id),
+    FOREIGN KEY (incoming_id) REFERENCES Incoming(incoming_id),
+    FOREIGN KEY (outgoing_id) REFERENCES Outgoing(outgoing_id)
+);
+
+-- Связь входящих документов и заданий
+CREATE TABLE IncomingTasks (
+    incoming_id INTEGER NOT NULL, -- Входящий документ
+    task_id INTEGER NOT NULL, -- Задание
+    
+    PRIMARY KEY (incoming_id, task_id),
+    FOREIGN KEY (incoming_id) REFERENCES Incoming(incoming_id),
+    FOREIGN KEY (task_id) REFERENCES Tasks(task_id)
+);
+
+CREATE TABLE OutgoingTasks (
+-- Связь исходящих документов и заданий
+    outgoing_id INTEGER NOT NULL, -- Исходящий документ
+    task_id INTEGER NOT NULL, -- Задание
+    
+    PRIMARY KEY (outgoing_id, task_id),
+    FOREIGN KEY (outgoing_id) REFERENCES Outgoing(outgoing_id),
+    FOREIGN KEY (task_id) REFERENCES Tasks(task_id)
+);
+
+CREATE TABLE TaskRelations (
+-- Связь заданий между собой
+    task1_id INTEGER NOT NULL, -- Первое задание
+    task2_id INTEGER NOT NULL, -- Второе задание
+    relation_type_id INTEGER NOT NULL, -- Тип связи
+    
+    PRIMARY KEY (task1_id, task2_id),
+    FOREIGN KEY (task1_id) REFERENCES Tasks(task_id),
+    FOREIGN KEY (task2_id) REFERENCES Tasks(task_id),
+    FOREIGN KEY (relation_type_id) REFERENCES TaskRelationTypes(relation_type_id),
+    CHECK(task1_id < task2_id) -- Предотвращение дублирования связей
+);
 
 CREATE TABLE TaskPersons (
 -- Связь заданий и персон

@@ -1,67 +1,100 @@
+// Основные таблицы системы документооборота и учета персональных данных
+
 Table Users {
   user_id integer [primary key, increment]
   user_number text [not null, unique]
-  abbreviation text [not null]
-  note: "Таблица пользователей системы"
+  abbreviation text
+  note: "Пользователи системы (исполнители заданий)"
 }
 
 Table Departments {
   department_id integer [primary key, increment]
-  name text [not null, unique]
-  note: "Таблица подразделений"
+  name text
+  synonym text
+  note: "Подразделения организации"
 }
 
-Table Initiators {
-  initiator_id integer [primary key, increment]
-  employee_name text [not null]
-  feedback_number text
+Table Employees {
+  employee_id integer [primary key, increment]
+  name text
+  employee_number text [not null]
+  synonym text
   department_id integer [not null]
-  note: "Таблица инициаторов заданий"
+  note: "Сотрудники организации"
 }
 
-Table Themes {
-  theme_id integer [primary key, increment]
-  description text [not null, unique]
-  note: "Таблица тематик заданий"
-}
-
-Table Topics {
-  topic_id integer [primary key, increment]
-  description text [not null, unique]
-  note: "Таблица тем"
-}
-
-Table TaskTypes {
-  type_id integer [primary key, increment]
-  type_name text [not null, unique]
-  description text
-  note: "Типы заданий"
+Table TaskSubjects {
+  subject_id integer [primary key, increment]
+  name text [not null, unique]
+  note: "Темы/предметы заданий"
 }
 
 Table Tasks {
   task_id integer [primary key, increment]
-  task_number text [not null, unique]
   start_date date [not null]
   end_date date
-  comment text
-  executor_id integer [not null]
-  initiator_id integer [not null]
-  type_id integer [not null]
-  theme_id integer
-  note: "Таблица заданий"
+  user_id integer [not null]
+  subject_id integer [not null]
+  note: "Задания для сотрудников"
 }
 
+Table TaskRelationTypes {
+  relation_type_id integer [primary key, increment]
+  name text [not null, unique]
+  note: "Типы связей между заданиями"
+}
+
+// Таблицы документооборота
+Table IncomingTypes {
+  type_id integer [primary key, increment]
+  name text [not null, unique]
+  note: "Типы входящих документов"
+}
+
+Table OutgoingTypes {
+  type_id integer [primary key, increment]
+  name text [not null, unique]
+  note: "Типы исходящих документов"
+}
+
+Table Incoming {
+  incoming_id integer [primary key, increment]
+  date date [not null]
+  reg_number text [not null]
+  department_id integer [not null]
+  employee_id integer [not null]
+  type_id integer [not null]
+  note: "Входящие документы"
+  indexes {
+    (date, reg_number) [unique]
+  }
+}
+
+Table Outgoing {
+  outgoing_id integer [primary key, increment]
+  date date [not null]
+  reg_number text [not null]
+  department_id integer [not null]
+  employee_id integer [not null]
+  type_id integer [not null]
+  note: "Исходящие документы"
+  indexes {
+    (date, reg_number) [unique]
+  }
+}
+
+// Таблицы географических данных
 Table Countries {
   country_id integer [primary key, increment]
   name text [not null, unique]
-  note: "Таблица стран"
+  note: "Страны"
 }
 
 Table Regions {
   region_id integer [primary key, increment]
   name text [not null]
   country_id integer [not null]
-  note: "Таблица регионов"
+  note: "Регионы/субъекты"
   indexes {
     (name, country_id) [unique]
   }
@@ -72,10 +105,17 @@ Table Cities {
   name text [not null]
   region_id integer [not null]
   country_id integer [not null]
-  note: "Таблица городов"
+  note: "Населенные пункты"
   indexes {
     (name, region_id) [unique]
   }
+}
+
+// Таблицы персональных данных
+Table Topics {
+  topic_id integer [primary key, increment]
+  description text [not null, unique]
+  note: "Темы для классификации персон"
 }
 
 Table Persons {
@@ -87,7 +127,7 @@ Table Persons {
   birth_place_id integer
   comment text
   topic_id integer
-  note: "Таблица персон"
+  note: "Физические лица (персоны)"
 }
 
 Table PassportOffices {
@@ -105,7 +145,7 @@ Table Passports {
   issue_date date
   issue_place_id integer
   person_id integer [not null]
-  note: "Паспорта"
+  note: "Паспортные данные"
   indexes {
     (number_series, country_id) [unique]
   }
@@ -118,7 +158,7 @@ Table DriverLicenses {
   number_series text [not null]
   issue_date date
   person_id integer [not null]
-  note: "Водительские права"
+  note: "Водительские удостоверения"
 }
 
 Table GovIdTypes {
@@ -132,7 +172,7 @@ Table GovIds {
   number text [not null]
   type_id integer [not null]
   person_id integer [not null]
-  note: "Гос. идентификаторы"
+  note: "Государственные идентификаторы"
   indexes {
     (number, type_id) [unique]
   }
@@ -145,7 +185,7 @@ Table WorkHistory {
   start_date date [not null]
   end_date date
   person_id integer [not null]
-  note: "Трудовая история"
+  note: "Трудовая деятельность"
 }
 
 Table Locations {
@@ -174,6 +214,7 @@ Table Cars {
   note: "Автомобили"
 }
 
+// Таблицы связи и интернет-активности
 Table TelecomOperators {
   operator_id integer [primary key, increment]
   name text [not null, unique]
@@ -202,13 +243,13 @@ Table ImsiNumbers {
   start_date date
   end_date date
   phone_id integer [not null]
-  note: "IMSI номера"
+  note: "IMSI номера SIM-карт"
 }
 
 Table ImeiNumbers {
   imei_id integer [primary key, increment]
   number text [not null, unique]
-  note: "IMEI номера"
+  note: "IMEI номера устройств"
 }
 
 Table Emails {
@@ -217,7 +258,7 @@ Table Emails {
   password text
   person_id integer
   topic_id integer
-  note: "Email адреса"
+  note: "Электронные почты"
 }
 
 Table Credentials {
@@ -239,7 +280,7 @@ Table Images {
   image_id integer [primary key, increment]
   file blob
   description text
-  note: "Изображения"
+  note: "Изображения и фотографии"
 }
 
 Table InternetAccounts {
@@ -263,7 +304,7 @@ Table InternetAccounts {
   comment text
   person_id integer [not null]
   topic_id integer
-  note: "Аккаунты в интернете"
+  note: "Аккаунты в интернет-сервисах"
   indexes {
     (service_id, account_id) [unique]
   }
@@ -282,7 +323,7 @@ Table CommunityThemes {
   theme_id integer [primary key, increment]
   theme_name text [not null, unique]
   description text
-  note: "Тематики сообществ"
+  note: "Тематики интернет-сообществ"
 }
 
 Table OnlineCommunities {
@@ -301,10 +342,11 @@ Table OnlineCommunities {
   }
 }
 
+// Справочники типов
 Table AddressTypes {
   address_type_id integer [primary key, increment]
   name text [not null, unique]
-  note: "Типы адресов"
+  note: "Типы адресов (регистрация, проживание)"
 }
 
 Table PersonRelationTypes {
@@ -324,16 +366,54 @@ Table DataBaseVersion {
   version integer [not null]
   date date
   comment text
-  note: "Версии БД"
+  note: "Версии базы данных"
 }
 
 // Связующие таблицы
+Table IncomingOutgoing {
+  incoming_id integer [not null]
+  outgoing_id integer [not null]
+  indexes {
+    (incoming_id, outgoing_id)
+  }
+  note: "Связь входящих и исходящих документов"
+}
+
+Table IncomingTasks {
+  incoming_id integer [not null]
+  task_id integer [not null]
+  indexes {
+    (incoming_id, task_id)
+  }
+  note: "Связь входящих документов и заданий"
+}
+
+Table OutgoingTasks {
+  outgoing_id integer [not null]
+  task_id integer [not null]
+  indexes {
+    (outgoing_id, task_id)
+  }
+  note: "Связь исходящих документов и заданий"
+}
+
+Table TaskRelations {
+  task1_id integer [not null]
+  task2_id integer [not null]
+  relation_type_id integer [not null]
+  indexes {
+    (task1_id, task2_id)
+  }
+  note: "Связи между заданиями"
+}
+
 Table TaskPersons {
   task_id integer [not null]
   person_id integer [not null]
   indexes {
     (task_id, person_id)
   }
+  note: "Связь заданий и персон"
 }
 
 Table TaskPhoneNumbers {
@@ -342,6 +422,7 @@ Table TaskPhoneNumbers {
   indexes {
     (task_id, phone_id)
   }
+  note: "Связь заданий и телефонных номеров"
 }
 
 Table TaskInternetAccounts {
@@ -350,6 +431,7 @@ Table TaskInternetAccounts {
   indexes {
     (task_id, internet_accounts_id)
   }
+  note: "Связь заданий и интернет-аккаунтов"
 }
 
 Table TaskEmails {
@@ -358,6 +440,7 @@ Table TaskEmails {
   indexes {
     (task_id, email_id)
   }
+  note: "Связь заданий и email-адресов"
 }
 
 Table PersonPhoneNumbers {
@@ -368,6 +451,7 @@ Table PersonPhoneNumbers {
   indexes {
     (person_id, phone_id)
   }
+  note: "Связь персон и телефонных номеров"
 }
 
 Table ImeiImsi {
@@ -378,6 +462,7 @@ Table ImeiImsi {
   indexes {
     (imei_id, imsi_id)
   }
+  note: "Связь IMEI и IMSI"
 }
 
 Table CommunityMembers {
@@ -386,6 +471,7 @@ Table CommunityMembers {
   indexes {
     (online_communities_id, internet_accounts_id)
   }
+  note: "Участники интернет-сообществ"
 }
 
 Table PersonLocations {
@@ -395,6 +481,7 @@ Table PersonLocations {
   indexes {
     (person_id, location_id)
   }
+  note: "Связь персон и мест пребывания"
 }
 
 Table PersonRelations {
@@ -404,6 +491,7 @@ Table PersonRelations {
   indexes {
     (person1_id, person2_id)
   }
+  note: "Связи между персонами"
 }
 
 Table AccountRelations {
@@ -413,14 +501,19 @@ Table AccountRelations {
   indexes {
     (account1_id, account2_id)
   }
+  note: "Связи между интернет-аккаунтами"
 }
 
-// Основные связи
-Ref: Initiators.department_id > Departments.department_id
-Ref: Tasks.executor_id > Users.user_id
-Ref: Tasks.initiator_id > Initiators.initiator_id
-Ref: Tasks.type_id > TaskTypes.type_id
-Ref: Tasks.theme_id > Themes.theme_id
+// Основные связи между таблицами
+Ref: Employees.department_id > Departments.department_id
+Ref: Tasks.user_id > Users.user_id
+Ref: Tasks.subject_id > TaskSubjects.subject_id
+Ref: Incoming.department_id > Departments.department_id
+Ref: Incoming.employee_id > Employees.employee_id
+Ref: Incoming.type_id > IncomingTypes.type_id
+Ref: Outgoing.department_id > Departments.department_id
+Ref: Outgoing.employee_id > Employees.employee_id
+Ref: Outgoing.type_id > OutgoingTypes.type_id
 Ref: Regions.country_id > Countries.country_id
 Ref: Cities.region_id > Regions.region_id
 Ref: Cities.country_id > Countries.country_id
@@ -461,6 +554,15 @@ Ref: OnlineCommunities.service_id > InternetServices.service_id
 Ref: OnlineCommunities.theme_id > CommunityThemes.theme_id
 
 // Связи для связующих таблиц
+Ref: IncomingOutgoing.incoming_id > Incoming.incoming_id
+Ref: IncomingOutgoing.outgoing_id > Outgoing.outgoing_id
+Ref: IncomingTasks.incoming_id > Incoming.incoming_id
+Ref: IncomingTasks.task_id > Tasks.task_id
+Ref: OutgoingTasks.outgoing_id > Outgoing.outgoing_id
+Ref: OutgoingTasks.task_id > Tasks.task_id
+Ref: TaskRelations.task1_id > Tasks.task_id
+Ref: TaskRelations.task2_id > Tasks.task_id
+Ref: TaskRelations.relation_type_id > TaskRelationTypes.relation_type_id
 Ref: TaskPersons.task_id > Tasks.task_id
 Ref: TaskPersons.person_id > Persons.person_id
 Ref: TaskPhoneNumbers.task_id > Tasks.task_id
