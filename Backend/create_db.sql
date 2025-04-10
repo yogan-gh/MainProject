@@ -408,8 +408,8 @@ CREATE TABLE WebPages (
 CREATE TABLE CommunityThemes (
 -- Таблица тематик интернет-сообществ
     theme_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    theme_name TEXT NOT NULL UNIQUE,  -- Название тематики
-    description TEXT                 -- Описание
+    theme_name TEXT NOT NULL UNIQUE, -- Название тематики
+    description TEXT -- Описание
 );
 
 CREATE TABLE OnlineCommunities (
