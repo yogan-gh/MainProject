@@ -128,6 +128,7 @@ Table Persons {
   middle_name text
   birth_date date
   birth_place_id integer
+  gender text [not null, note: "Possible values: male, female, other"]
   comment text
   topic_id integer
   note: "Физические лица (персоны)"
@@ -304,6 +305,7 @@ Table InternetAccounts {
   profile_url text
   screenshot_id integer
   is_private boolean
+  gender text [not null, note: "Possible values: male, female, other"]
   comment text
   person_id integer [not null]
   topic_id integer
