@@ -146,6 +146,7 @@ CREATE TABLE Persons (
     middle_name TEXT, -- Отчество
     birth_date DATE, -- Дата рождения
     birth_place_id INTEGER, -- Место рождения
+    gender TEXT NOT NULL CHECK (gender IN ('male', 'female', 'other')), -- Пол
     comment TEXT, -- Комментарий
     topic_id INTEGER,  -- Тематика
 
@@ -377,6 +378,7 @@ CREATE TABLE InternetAccounts (
     profile_url TEXT, -- URL профиля
     screenshot_id INTEGER, -- Скриншот профиля
     is_private BOOLEAN, -- Приватность профиля
+    gender TEXT NOT NULL CHECK (gender IN ('male', 'female', 'other')), -- Пол
     comment TEXT, -- Комментарий
     person_id INTEGER NOT NULL, -- Владелец аккаунта
     topic_id INTEGER,  -- Тематика
