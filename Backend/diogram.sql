@@ -26,6 +26,7 @@ Table Employees {
 Table TaskSubjects {
   subject_id integer [primary key, increment]
   name text [not null, unique]
+  synonym text
   note: "Темы/предметы заданий"
 }
 
@@ -48,12 +49,14 @@ Table TaskRelationTypes {
 Table IncomingTypes {
   type_id integer [primary key, increment]
   name text [not null, unique]
+  synonym text
   note: "Типы входящих документов"
 }
 
 Table OutgoingTypes {
   type_id integer [primary key, increment]
   name text [not null, unique]
+  synonym text
   note: "Типы исходящих документов"
 }
 

@@ -32,7 +32,8 @@ CREATE TABLE Employees (
 CREATE TABLE TaskSubjects (
 -- Таблица тем заданий
     subject_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE -- Название темы
+    name TEXT NOT NULL UNIQUE, -- Название темы
+    synonym TEXT -- Синоним/сокращенное название
 );
 
 CREATE TABLE Tasks (
@@ -56,12 +57,14 @@ CREATE TABLE TaskRelationTypes (
 CREATE TABLE IncomingTypes (
 -- Таблица типов входящих документов
     type_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    synonym TEXT, -- Синоним/сокращенное название
     name TEXT NOT NULL UNIQUE -- Название типа
 );
 
 CREATE TABLE OutgoingTypes (
 -- Таблица типов исходящих документов
     type_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    synonym TEXT, -- Синоним/сокращенное название
     name TEXT NOT NULL UNIQUE -- Название типа
 );
 
