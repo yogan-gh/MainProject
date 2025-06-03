@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tasker{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "css/styles.css" %}" />
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="/" class="{% if active_tab == 'index' %}active{% endif %}">Главная</a>
+            <a href="stats" class="{% if active_tab == 'stats' %}active{% endif %}">Статистика</a>
+            <a href="settings" class="{% if active_tab == 'settings' %}active{% endif %}">Настройки</a>
+            <a href="feedback" class="{% if active_tab == 'feedback' %}active{% endif %}">Обратная связь</a>
+        </div>
+        <div class="nav-right">
+            <span class="user-info">Иван Иванов</span>
+            <button class="logout-btn">Выйти</button>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content%}Контент{% endblock content %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends "menu.html" %}
+{% block title %}Tasker{% endblock title %}
+{% block content %}
+<h1>Статистика</h1>
+<label>Период:</label>
+<div class="date-range">
+    <input type="date">
+    <span>-</span>
+    <input type="date">
+</div>
+<div class="stats-cards">
+    <div class="card">
+        <h3>Получено</h3>
+        <br>
+        <p>24</p>
+    </div>
+    <div class="card">
+        <h3>Выполнено</h3>
+        <br>
+        <p>18</p>
+    </div>
+    <div class="card">
+        <h3>Не выполнено</h3>
+        <br>
+        <p>6</p>
+    </div>
+</div>
+{% endblock content %}

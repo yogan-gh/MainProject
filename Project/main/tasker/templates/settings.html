@@ -1,0 +1,22 @@
+{% extends "menu.html" %}
+{% block title %}Tasker{% endblock title %}
+{% block content %}
+<h1>Настройки</h1>
+<form>
+    <h2>Профиль</h2>
+    <label>Имя:</label>
+    <input type="text">
+    
+    <label>Email:</label>
+    <input type="email">
+    
+    <h2>Приложение</h2>
+    <label>Тема:</label>
+    <select>
+        <option>Светлая</option>
+        <option>Темная</option>
+    </select>
+    
+    <button type="submit">Сохранить</button>
+</form>
+{% endblock content %}
