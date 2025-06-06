@@ -30,4 +30,6 @@ class TaskPhoneNumbers(models.Model):
 
 class TaskPersons(models.Model):
     task = models.ForeignKey(Tasks, on_delete=models.PROTECT)
-    internet_account = models.CharField()
+    person = models.CharField()
+    def __str__(self):
+        return self.person
