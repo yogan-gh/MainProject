@@ -11,8 +11,9 @@
 <table>
     <thead>
         <tr>
-            <th>Исполнитель</th>
+            <th>Оператор</th>
             <th>Тема</th>
+            <th>Статус</th>
             <th>Дата выдачи</th>
             <th>Дата исполнения</th>
             <th>Действия</th>
@@ -24,8 +25,9 @@
         <tr>
             <td>{{ task.user }}</td>
             <td>{{ task.subject }}</td>
-            <td>{{ task.start_date }}</td>
-            <td>{{ task.end_date }}</td>
+            <td>{{ task.status }}</td>
+            <td>{{ task.start_date|date:"d.m.Y" }}</td>
+            <td>{{ task.end_date|date:"d.m.Y" }}</td>
             <td>
                 <a href="{{task.id}}" class="details-btn">Подробнее</a>
                 <a href="edit/{{task.id}}" class="details-btn">Изменить</a>

@@ -2,8 +2,6 @@
 {% block title %}Tasker{% endblock title %}
 {% block content %}
 <div class="task-detail">
-    <h1>Детали задания #{{ task.id }}</h1>
-
     <div class="task-info">
         <h2>Основная информация</h2>
         <div class="info-grid">
@@ -12,6 +10,9 @@
 
             <div class="info-label">Тема задания:</div>
             <div class="info-value">{{ task.subject }}</div>
+
+            <div class="info-label">Статус задания:</div>
+            <div class="info-value">{{ task.status }}</div>
 
             <div class="info-label">Дата начала:</div>
             <div class="info-value">{{ task.start_date|date:"d.m.Y" }}</div>
@@ -22,8 +23,6 @@
     </div>
 
     <div class="related-data">
-        <h2>Связанные данные</h2>
-
         <div class="data-section">
             <h3>Персоны</h3>
             <ul>
