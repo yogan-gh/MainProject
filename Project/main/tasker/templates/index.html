@@ -2,36 +2,40 @@
 {% block title %}Tasker{% endblock title %}
 {% block content %}
 <h1>Список заданий</h1>
+{% if tasks.count > 0 %}
+    <p>{{ task.user }}</p>
+    <p>{{ task.subject }}</p>
+    <p>{{ task.start_date }}</p>
+    <p>{{ task.end_date }}</p>
+
 <table>
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Название</th>
-            <th>Статус</th>
+            <th>Исполнитель</th>
+            <th>Тема</th>
+            <th>Дата выдачи</th>
+            <th>Дата исполнения</th>
             <th>Действия</th>
         </tr>
     </thead>
     <tbody>
+
+    {% for task in tasks %}
         <tr>
-            <td>1</td>
-            <td>Задание 1</td>
-            <td>В работе</td>
+            <td>{{ task.user }}</td>
+            <td>{{ task.subject }}</td>
+            <td>{{ task.start_date }}</td>
+            <td>{{ task.end_date }}</td>
             <td>
-                <a href="task-details" class="details-btn">Подробнее</a>
-                <a href="task-details" class="details-btn">Изменить</a>
-                <a href="task-details" class="details-btn">Удалить</a>
+                <a href="{{task.id}}" class="details-btn">Подробнее</a>
+                <a href="edit/{{task.id}}" class="details-btn">Изменить</a>
+                <a href="delete/{{task.id}}" class="details-btn">Удалить</a>
             </td>
         </tr>
-        <tr>
-            <td>2</td>
-            <td>Задание 2</td>
-            <td>Завершено</td>
-            <td>
-                <a href="task-details" class="details-btn">Подробнее</a>
-                <a href="task-details" class="details-btn">Изменить</a>
-                <a href="task-details" class="details-btn">Удалить</a>
-            </td>
-        </tr>
+    {% endfor %}
     </tbody>
 </table>
+{% else %}
+    <h2>Список заданий пуст</h2>
+{% endif %}
 {% endblock content %}
