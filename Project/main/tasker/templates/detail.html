@@ -1,0 +1,106 @@
+{% extends "menu.html" %}
+{% block title %}Tasker{% endblock title %}
+{% block content %}
+<div class="task-detail">
+    <h1>Детали задания #{{ task.id }}</h1>
+
+    <div class="task-info">
+        <h2>Основная информация</h2>
+        <div class="info-grid">
+            <div class="info-label">Исполнитель:</div>
+            <div class="info-value">{{ task.user }}</div>
+
+            <div class="info-label">Тема задания:</div>
+            <div class="info-value">{{ task.subject }}</div>
+
+            <div class="info-label">Дата начала:</div>
+            <div class="info-value">{{ task.start_date|date:"d.m.Y" }}</div>
+
+            <div class="info-label">Дата окончания:</div>
+            <div class="info-value">{{ task.end_date|date:"d.m.Y" }}</div>
+        </div>
+    </div>
+
+    <div class="related-data">
+        <h2>Связанные данные</h2>
+
+        <div class="data-section">
+            <h3>Персоны</h3>
+            <ul>
+                {% for person in task.taskpersons_set.all %}
+                    <li>
+                        <span class="copy-text">{{ person.person }}</span>
+                        {% include "includes/copy_button.html" %}
+                    </li>
+                {% empty %}
+                    <li>Нет привязанных персон</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="data-section">
+            <h3>Телефонные номера</h3>
+            <ul>
+                {% for phone in task.taskphonenumbers_set.all %}
+                    <li>
+                        <span>{{ phone.phone }}</span>
+                        {% include "includes/copy_button.html" %}
+                    </li>
+                {% empty %}
+                    <li>Нет привязанных номеров</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="data-section">
+            <h3>Интернет-аккаунты</h3>
+            <ul>
+                {% for account in task.taskinternetaccounts_set.all %}
+                    <li>
+                        <span>{{ account.internet_account }}</span>
+                        {% include "includes/copy_button.html" %}
+                    </li>
+                {% empty %}
+                    <li>Нет привязанных аккаунтов</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="data-section">
+            <h3>Email-адреса</h3>
+            <ul>
+                {% for email in task.taskemails_set.all %}
+                    <li>
+                        <span>{{ email.email }}</span>
+                        {% include "includes/copy_button.html" %}
+                    </li>
+                {% empty %}
+                    <li>Нет привязанных email-адресов</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+    <a href="/" class="back-btn">Назад к списку</a>
+</div>
+<script>
+function copyToClipboard(button) {
+    const textToCopy = button.previousElementSibling.textContent;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
+        button.style.color = '#2ecc71';
+
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.style.color = '';
+        }, 500);
+    }).catch(err => {
+        console.error('Ошибка при копировании: ', err);
+        button.textContent = 'Ошибка';
+        button.style.color = '#e74c3c';
+    });
+}
+</script>
+{% endblock content %}

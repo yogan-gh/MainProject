@@ -134,26 +134,66 @@ input, select, textarea {
     margin-bottom: 1.5rem;
 }
 
-.task-details {
+.task-detail {
+    max-width: 900px;
+    margin: 0 auto;
     background: white;
-    padding: 1.5rem;
-    border-radius: 4px;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.detail-row {
+.task-info h2, .related-data h2 {
+    color: #2c3e50;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
 }
 
-.detail-label {
+.info-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.info-label {
     font-weight: bold;
-    display: block;
+    color: #7f8c8d;
+}
+
+.data-section {
+    margin-bottom: 2rem;
+}
+
+.data-section h3 {
+    color: #3498db;
     margin-bottom: 0.5rem;
 }
 
-.detail-value {
-    display: block;
+.data-section ul {
+    list-style-type: none;
+    padding-left: 1rem;
 }
 
-.back-btn {
-    margin-top: 1.5rem;
+.data-section li {
+    padding: 0.3rem 0;
+    border-bottom: 1px dashed #ecf0f1;
+}
+
+.copy-btn {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    line-height: 0;
+}
+
+.copy-btn svg {
+    display: block;
+    transition: stroke 0.2s;
+}
+
+.copy-btn:hover svg {
+    stroke: #bee5ff;
 }
