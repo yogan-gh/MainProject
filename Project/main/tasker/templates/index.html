@@ -1,7 +1,10 @@
 {% extends "menu.html" %}
 {% block title %}Tasker{% endblock title %}
 {% block content %}
-<h1>Список заданий</h1>
+<div class="header-container">
+    <h1>Список заданий</h1>
+    <a href="create" class="details-btn">Зарегистрировать новое задание</a>
+</div>
 {% if tasks.count > 0 %}
     <p>{{ task.user }}</p>
     <p>{{ task.subject }}</p>
