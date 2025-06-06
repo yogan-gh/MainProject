@@ -3,6 +3,7 @@ from django.urls import path
 from tasker import views
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path("", views.index),
     path('stats', views.stats),
     path('settings', views.settings),
