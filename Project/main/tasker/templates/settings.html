@@ -2,21 +2,100 @@
 {% block title %}Tasker{% endblock title %}
 {% block content %}
 <h1>Настройки</h1>
-<form>
-    <h2>Профиль</h2>
-    <label>Имя:</label>
-    <input type="text">
-    
-    <label>Email:</label>
-    <input type="email">
-    
-    <h2>Приложение</h2>
-    <label>Тема:</label>
-    <select>
-        <option>Светлая</option>
-        <option>Темная</option>
-    </select>
-    
-    <button type="submit">Сохранить</button>
-</form>
+<div class="container">
+    <!-- Секция Users -->
+    <div class="section">
+        <h2>Пользователи</h2>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Номер</th>
+                <th>Аббревиатура</th>
+                <th>Действия</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.user_number }}</td>
+                <td>{{ user.abbreviation }}</td>
+                <td>
+                    <a href="{% url 'edit_user' user.id %}">Изменить</a>
+                    <a href="{% url 'delete_user' user.id %}" onclick="return confirm('Удалить?')">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form method="post" action="{% url 'add_user' %}">
+            {% csrf_token %}
+            <input type="number" name="user_number" placeholder="Номер пользователя" required>
+            <input type="text" name="abbreviation" placeholder="Аббревиатура" required>
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+
+    <!-- Секция TaskSubjects -->
+    <div class="section">
+        <h2>Тематики</h2>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Синоним</th>
+                <th>Действия</th>
+            </tr>
+            {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.id }}</td>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.synonym }}</td>
+                <td>
+                    <a href="{% url 'edit_subject' subject.id %}">Изменить</a>
+                    <a href="{% url 'delete_subject' subject.id %}" onclick="return confirm('Удалить?')">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form method="post" action="{% url 'add_subject' %}">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Название" required>
+            <input type="text" name="synonym" placeholder="Синоним" required>
+            <button type="submit">Добавить</button>
+        </form>
+
+    </div>
+
+    <!-- Секция TaskStatus -->
+    <div class="section">
+        <h2>Статус</h2>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+            {% for status in statuses %}
+            <tr>
+                <td>{{ status.id }}</td>
+                <td>{{ status.status }}</td>
+                <td>
+                    <a href="{% url 'edit_status' status.id %}">Изменить</a>
+                    <a href="{% url 'delete_status' status.id %}" onclick="return confirm('Удалить?')">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form method="post" action="{% url 'add_status' %}">
+            {% csrf_token %}
+            <input type="text" name="status" placeholder="Статус" required>
+            <button type="submit">Добавить</button>
+        </form>
+
+    </div>
+</div>
 {% endblock content %}

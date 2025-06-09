@@ -1,6 +1,21 @@
 from django import forms
 from .models import *
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = Users
+        fields = '__all__'
+
+class SubjectsForm(forms.ModelForm):
+    class Meta:
+        model = TaskSubjects
+        fields = '__all__'
+
+class StatusForm(forms.ModelForm):
+    class Meta:
+        model = TaskStatus
+        fields = '__all__'
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Tasks
@@ -29,9 +44,6 @@ class InternetAccountForm(forms.ModelForm):
     class Meta:
         model = InternetAccounts
         fields = ['url']
-        widgets = {
-            'url': forms.URLInput(attrs={'placeholder': 'https://example.com'})
-        }
 
 class EmailForm(forms.ModelForm):
     class Meta:

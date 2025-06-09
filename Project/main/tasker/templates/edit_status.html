@@ -1,0 +1,11 @@
+{% extends "menu.html" %}
+{% block title %}Tasker{% endblock title %}
+{% block content %}
+<h1>{% if form.instance.id %}Редактирование{% else %}Добавление{% endif %}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+    <a href="{% url 'all_data' %}" class="back-btn">Отмена</a>
+</form>
+{% endblock content %}
