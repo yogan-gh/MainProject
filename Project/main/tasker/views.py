@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
 from django.forms import formset_factory
-from .models import Tasks
 from .forms import *
 
 def index(request):
