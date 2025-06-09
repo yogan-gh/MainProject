@@ -22,9 +22,9 @@ class TaskStatus(models.Model):
         return self.status
 
 class InternetAccounts(models.Model):
-    url = models.CharField()
+    account = models.CharField()
     def __str__(self):
-        return self.url
+        return self.account
 
 class Emails(models.Model):
     email = models.EmailField()
