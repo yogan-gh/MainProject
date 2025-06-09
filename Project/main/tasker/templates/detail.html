@@ -26,7 +26,7 @@
         <div class="data-section">
             <h3>Персоны</h3>
             <ul>
-                {% for person in task.taskpersons_set.all %}
+                {% for person in task.person.all %}
                     <li>
                         <span class="copy-text">{{ person.person }}</span>
                         {% include "includes/copy_button.html" %}
@@ -40,9 +40,9 @@
         <div class="data-section">
             <h3>Телефонные номера</h3>
             <ul>
-                {% for phone in task.taskphonenumbers_set.all %}
+                {% for phone in task.phoneNumbers.all %}
                     <li>
-                        <span>{{ phone.phone }}</span>
+                        <span>{{ phone.numbers }}</span>
                         {% include "includes/copy_button.html" %}
                     </li>
                 {% empty %}
@@ -54,9 +54,9 @@
         <div class="data-section">
             <h3>Интернет-аккаунты</h3>
             <ul>
-                {% for account in task.taskinternetaccounts_set.all %}
+                {% for account in task.internet_accounts.all %}
                     <li>
-                        <span>{{ account.internet_account }}</span>
+                        <span>{{ account.url }}</span>
                         {% include "includes/copy_button.html" %}
                     </li>
                 {% empty %}
@@ -68,7 +68,7 @@
         <div class="data-section">
             <h3>Email-адреса</h3>
             <ul>
-                {% for email in task.taskemails_set.all %}
+                {% for email in task.emails.all %}
                     <li>
                         <span>{{ email.email }}</span>
                         {% include "includes/copy_button.html" %}
