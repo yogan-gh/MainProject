@@ -1,7 +1,40 @@
 {% extends "menu.html" %}
 {% block title %}Tasker{% endblock title %}
 {% block content %}
-<table>
-    {{ form }}
-</table>
+<h2>Создание новой задачи</h2>
+<form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+        {{ form.user.label_tag }}
+        {{ form.user }}
+        {{ form.user.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.subject.label_tag }}
+        {{ form.subject }}
+        {{ form.subject.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.status.label_tag }}
+        {{ form.status }}
+        {{ form.status.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.start_date.label_tag }}
+        {{ form.start_date }}
+        {{ form.start_date.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.end_date.label_tag }}
+        {{ form.end_date }}
+        {{ form.end_date.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Создать задачу</button>
+</form>
 {% endblock content %}

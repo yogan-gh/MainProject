@@ -6,6 +6,7 @@ urlpatterns = [
     path("", views.index),
     path("<int:id>", views.detail),
     path("create/", views.create),
+    path('create/<int:id>/adddata/', views.adddata),
     path("edit/<int:id>/", views.edit),
     path("delete/<int:id>/", views.delete),
     path('stats', views.stats),
