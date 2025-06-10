@@ -32,7 +32,7 @@ class Emails(models.Model):
         return self.email
 
 class PhoneNumbers(models.Model):
-    numbers = models.IntegerField()
+    numbers = models.CharField()
     def __str__(self):
         return self.numbers
 
@@ -48,7 +48,7 @@ class Tasks(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     persons = models.ManyToManyField(Persons)
-    internet_accounts = models.ManyToManyField(InternetAccounts)
+    accounts = models.ManyToManyField(InternetAccounts)
     emails = models.ManyToManyField(Emails)
     phoneNumbers = models.ManyToManyField(PhoneNumbers)
     def __str__(self):
