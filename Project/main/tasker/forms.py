@@ -43,7 +43,7 @@ class PersonForm(forms.ModelForm):
 class InternetAccountForm(forms.ModelForm):
     class Meta:
         model = InternetAccounts
-        fields = ['url']
+        fields = ['account']
 
 class EmailForm(forms.ModelForm):
     class Meta:
