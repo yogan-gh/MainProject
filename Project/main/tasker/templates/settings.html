@@ -9,14 +9,12 @@
 
         <table>
             <tr>
-                <th>ID</th>
                 <th>Номер</th>
                 <th>Аббревиатура</th>
                 <th>Действия</th>
             </tr>
             {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
                 <td>{{ user.user_number }}</td>
                 <td>{{ user.abbreviation }}</td>
                 <td>
@@ -41,14 +39,12 @@
 
         <table>
             <tr>
-                <th>ID</th>
                 <th>Название</th>
                 <th>Синоним</th>
                 <th>Действия</th>
             </tr>
             {% for subject in subjects %}
             <tr>
-                <td>{{ subject.id }}</td>
                 <td>{{ subject.name }}</td>
                 <td>{{ subject.synonym }}</td>
                 <td>
@@ -74,13 +70,11 @@
 
         <table>
             <tr>
-                <th>ID</th>
                 <th>Статус</th>
                 <th>Действия</th>
             </tr>
             {% for status in statuses %}
             <tr>
-                <td>{{ status.id }}</td>
                 <td>{{ status.status }}</td>
                 <td>
                     <a href="{% url 'edit_status' status.id %}">Изменить</a>
