@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from ..models import Users, TaskSubjects, TaskStatus
 from ..forms import UserForm, SubjectsForm, StatusForm
 
-def all_data_view(request):
+def all_view(request):
     context = {
         'users': Users.objects.all(),
         'subjects': TaskSubjects.objects.all(),
@@ -10,11 +10,6 @@ def all_data_view(request):
         'active_tab': 'settings'
     }
     return render(request, 'settings/settings.html', context)
-
-# Users CRUD
-def users_view(request):
-    users = Users.objects.all()
-    return render(request, 'users.html', {'users': users})
 
 def add_user(request):
     if request.method == 'POST':
@@ -42,11 +37,6 @@ def delete_user(request, user_id):
     user.delete()
     return redirect('all_data')
 
-# TaskSubjects CRUD
-def subjects_view(request):
-    subjects = TaskSubjects.objects.all()
-    return render(request, 'subjects.html', {'subjects': subjects})
-
 def add_subject(request):
     if request.method == 'POST':
         form = SubjectsForm(request.POST)
@@ -72,11 +62,6 @@ def delete_subject(request, subject_id):
     subject = get_object_or_404(TaskSubjects, pk=subject_id)
     subject.delete()
     return redirect('all_data')
-
-# TaskStatus CRUD
-def statuses_view(request):
-    statuses = TaskStatus.objects.all()
-    return render(request, 'statuses.html', {'statuses': statuses})
 
 def add_status(request):
     if request.method == 'POST':
