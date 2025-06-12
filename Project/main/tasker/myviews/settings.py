@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Users, TaskSubjects, TaskStatus
-from .forms import UserForm, SubjectsForm, StatusForm
+from ..models import Users, TaskSubjects, TaskStatus
+from ..forms import UserForm, SubjectsForm, StatusForm
 
 def all_data_view(request):
     context = {
