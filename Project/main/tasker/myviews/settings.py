@@ -6,7 +6,8 @@ def all_data_view(request):
     context = {
         'users': Users.objects.all(),
         'subjects': TaskSubjects.objects.all(),
-        'statuses': TaskStatus.objects.all()
+        'statuses': TaskStatus.objects.all(),
+        'active_tab': 'settings'
     }
     return render(request, 'settings/settings.html', context)
 
