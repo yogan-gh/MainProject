@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from ..models import Users, TaskSubjects, TaskStatus
 from ..forms import UserForm, SubjectsForm, StatusForm
 
-def all_view(request):
+def all_settings(request):
     context = {
         'users': Users.objects.all(),
         'subjects': TaskSubjects.objects.all(),
@@ -16,7 +16,7 @@ def add_user(request):
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('all_data')
+            return redirect('all_settings')
     else:
         form = UserForm()
     return render(request, 'add_user.html', {'form': form})
@@ -27,22 +27,22 @@ def edit_user(request, user_id):
         form = UserForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('all_data')
+            return redirect('all_settings')
     else:
         form = UserForm(instance=user)
-    return render(request, 'settings/edit_user.html', {'form': form})
+    return render(request, 'settings/edit.html', {'form': form})
 
 def delete_user(request, user_id):
     user = get_object_or_404(Users, pk=user_id)
     user.delete()
-    return redirect('all_data')
+    return redirect('all_settings')
 
 def add_subject(request):
     if request.method == 'POST':
         form = SubjectsForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('all_data')
+            return redirect('all_settings')
     else:
         form = SubjectsForm()
     return render(request, 'add_subject.html', {'form': form})
@@ -53,22 +53,22 @@ def edit_subject(request, subject_id):
         form = SubjectsForm(request.POST, instance=subject)
         if form.is_valid():
             form.save()
-            return redirect('all_data')
+            return redirect('all_settings')
     else:
         form = SubjectsForm(instance=subject)
-    return render(request, 'settings/edit_subject.html', {'form': form})
+    return render(request, 'settings/edit.html', {'form': form})
 
 def delete_subject(request, subject_id):
     subject = get_object_or_404(TaskSubjects, pk=subject_id)
     subject.delete()
-    return redirect('all_data')
+    return redirect('all_settings')
 
 def add_status(request):
     if request.method == 'POST':
         form = StatusForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('all_data')
+            return redirect('all_settings')
     else:
         form = StatusForm()
     return render(request, 'add_status.html', {'form': form})
@@ -79,12 +79,12 @@ def edit_status(request, status_id):
         form = StatusForm(request.POST, instance=status)
         if form.is_valid():
             form.save()
-            return redirect('all_data')
+            return redirect('all_settings')
     else:
         form = StatusForm(instance=status)
-    return render(request, 'settings/edit_status.html', {'form': form})
+    return render(request, 'settings/edit.html', {'form': form})
 
 def delete_status(request, status_id):
     status = get_object_or_404(TaskStatus, pk=status_id)
     status.delete()
-    return redirect('all_data')
+    return redirect('all_settings')
