@@ -48,8 +48,8 @@ class Tasks(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     persons = models.ManyToManyField(Persons)
+    phoneNumbers = models.ManyToManyField(PhoneNumbers)
     accounts = models.ManyToManyField(InternetAccounts)
     emails = models.ManyToManyField(Emails)
-    phoneNumbers = models.ManyToManyField(PhoneNumbers)
     def __str__(self):
         return f"Task to {self.user}"
