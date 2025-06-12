@@ -6,6 +6,6 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Сохранить</button>
-    <a href="{% url 'all_data' %}" class="back-btn">Отмена</a>
+    <a href="{% url 'all_settings' %}" class="back-btn">Отмена</a>
 </form>
 {% endblock content %}
