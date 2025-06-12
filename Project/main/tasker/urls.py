@@ -23,7 +23,7 @@ tasks_patterns = [
     path("", tasks.list, name='list'),
     path("add/", tasks.add, name='add'),
     path("<int:id>/", tasks.detail, name='detail'),
-    # path('<int:pk>/data/', tasks.adddata),
+    path('<int:id>/data/', include(task_data_patterns)),
     path("<int:id>/edit/", tasks.edit, name='edit'),
     path("<int:id>/delete/", tasks.delete, name='delete'),
 ]

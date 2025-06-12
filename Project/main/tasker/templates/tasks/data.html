@@ -1,0 +1,111 @@
+{% extends "menu.html" %}
+{% block title %}Tasker{% endblock title %}
+{% block content %}
+<h1>Объекты задания</h1>
+<div class="container">
+    <!-- Секция Персона -->
+    <div class="section">
+        <h2>Персоны</h2>
+
+        <table>
+            <tr>
+                <th>Персона</th>
+                <th>Действия</th>
+            </tr>
+            {% for person in persons %}
+            <tr>
+                <td>{{ person.person }}</td>
+                <td>
+                    <a href="{% url 'delete_person' task.id person.id %}" onclick="return confirm('Удалить?')">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form method="post" action="{% url 'add_person' task.id %}">
+            {% csrf_token %}
+            <input type="text" name="person" placeholder="Персона" required>
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+
+    <!-- Секция номера телефонов -->
+    <div class="section">
+        <h2>Телефонные номера</h2>
+
+        <table>
+            <tr>
+                <th>Номер телефона</th>
+                <th>Действия</th>
+            </tr>
+            {% for phone in phones %}
+            <tr>
+                <td>{{ phone.numbers }}</td>
+                <td>
+                    <a href="{% url 'delete_phone' task.id phone.id %}" onclick="return confirm('Удалить?')">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form method="post" action="{% url 'add_phone' task.id %}">
+            {% csrf_token %}
+            <input type="text" name="numbers" placeholder="Номер телефона" required>
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+
+    <!-- Секция аккаунты -->
+    <div class="section">
+        <h2>Аккаунты</h2>
+
+        <table>
+            <tr>
+                <th>Аккаунт</th>
+                <th>Действия</th>
+            </tr>
+            {% for account in accounts %}
+            <tr>
+                <td>{{ account.account }}</td>
+                <td>
+                    <a href="{% url 'delete_account' task.id account.id %}" onclick="return confirm('Удалить?')">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form method="post" action="{% url 'add_account' task.id %}">
+            {% csrf_token %}
+            <input type="text" name="account" placeholder="Аккаунт" required>
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+
+
+    <!-- Секция почты -->
+    <div class="section">
+        <h2>Адреса электронной почты</h2>
+
+        <table>
+            <tr>
+                <th>Email</th>
+                <th>Действия</th>
+            </tr>
+            {% for email in emails %}
+            <tr>
+                <td>{{ email.email }}</td>
+                <td>
+                    <a href="{% url 'delete_email' task.id email.id %}" onclick="return confirm('Удалить?')">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form method="post" action="{% url 'add_email' task.id %}">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Email" required>
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

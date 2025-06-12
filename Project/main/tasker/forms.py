@@ -57,25 +57,22 @@ class TaskForm(forms.ModelForm):
 class PersonForm(forms.ModelForm):
     class Meta:
         model = Persons
-        fields = ['person']
-
-class InternetAccountForm(forms.ModelForm):
-    class Meta:
-        model = InternetAccounts
-        fields = ['account']
-
-class EmailForm(forms.ModelForm):
-    class Meta:
-        model = Emails
-        fields = ['email']
-        widgets = {
-            'email': forms.EmailInput(attrs={'placeholder': 'user@example.com'})
-        }
+        fields = '__all__'
 
 class PhoneNumberForm(forms.ModelForm):
     class Meta:
         model = PhoneNumbers
-        fields = ['numbers']
+        fields = '__all__'
         widgets = {
-            'numbers': forms.NumberInput(attrs={'placeholder': '79001234567'})
+            'phoneNumbers': forms.NumberInput(attrs={'placeholder': '79001234567'})
         }
+
+class InternetAccountForm(forms.ModelForm):
+    class Meta:
+        model = InternetAccounts
+        fields = '__all__'
+
+class EmailForm(forms.ModelForm):
+    class Meta:
+        model = Emails
+        fields = '__all__'
