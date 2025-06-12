@@ -41,7 +41,18 @@
                 {% endfor %}
             </ul>
         </div>
-        
+
+        <div class="data-section">
+            <h3>Телефонные номера</h3>
+            <ul>
+                {% for number in task.phoneNumbers.all %}
+                    <li>{{ number.numbers }}</li>
+                {% empty %}
+                    <li>Нет телефонных номеров</li>
+                {% endfor %}
+            </ul>
+        </div>
+
         <div class="data-section">
             <h3>Аккаунты</h3>
             <ul>
@@ -63,21 +74,11 @@
                 {% endfor %}
             </ul>
         </div>
-        
-        <div class="data-section">
-            <h3>Телефонные номера</h3>
-            <ul>
-                {% for number in task.phoneNumbers.all %}
-                    <li>{{ number.number }}</li>
-                {% empty %}
-                    <li>Нет телефонных номеров</li>
-                {% endfor %}
-            </ul>
-        </div>
+
     </div>
     
     <div>
-        <a href="editdata" class="details-btn">Изменить связные данные</a>
+        <a href="data" class="details-btn">Изменить связные данные</a>
     </div>
 </div>
 {% endblock content %}
