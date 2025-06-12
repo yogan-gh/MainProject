@@ -8,7 +8,7 @@ def all_data_view(request):
         'subjects': TaskSubjects.objects.all(),
         'statuses': TaskStatus.objects.all()
     }
-    return render(request, 'settings.html', context)
+    return render(request, 'settings/settings.html', context)
 
 # Users CRUD
 def users_view(request):
@@ -34,7 +34,7 @@ def edit_user(request, user_id):
             return redirect('all_data')
     else:
         form = UserForm(instance=user)
-    return render(request, 'edit_user.html', {'form': form})
+    return render(request, 'settings/edit_user.html', {'form': form})
 
 def delete_user(request, user_id):
     user = get_object_or_404(Users, pk=user_id)
@@ -65,7 +65,7 @@ def edit_subject(request, subject_id):
             return redirect('all_data')
     else:
         form = SubjectsForm(instance=subject)
-    return render(request, 'edit_subject.html', {'form': form})
+    return render(request, 'settings/edit_subject.html', {'form': form})
 
 def delete_subject(request, subject_id):
     subject = get_object_or_404(TaskSubjects, pk=subject_id)
@@ -96,7 +96,7 @@ def edit_status(request, status_id):
             return redirect('all_data')
     else:
         form = StatusForm(instance=status)
-    return render(request, 'edit_status.html', {'form': form})
+    return render(request, 'settings/edit_status.html', {'form': form})
 
 def delete_status(request, status_id):
     status = get_object_or_404(TaskStatus, pk=status_id)
