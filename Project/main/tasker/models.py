@@ -27,7 +27,7 @@ class InternetAccounts(models.Model):
         return self.account
 
 class Emails(models.Model):
-    email = models.EmailField()
+    email = models.CharField()
     def __str__(self):
         return self.email
 
