@@ -1,0 +1,15 @@
+{% extends "menu.html" %}
+{% block title %}Удалить задачу{% endblock title %}
+{% block content %}
+<div class="header-container">
+    <h1>Удалить задачу</h1>
+</div>
+<div class="task-detail">
+    <p>Вы уверены, что хотите удалить эту задачу?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="details-btn">Удалить</button>
+        <a href="/tasker" class="back-btn">Отмена</a>
+    </form>
+</div>
+{% endblock content %}

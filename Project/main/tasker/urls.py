@@ -26,12 +26,18 @@ settings_patterns = [
 ]
 
 tasks_patterns = [
-    path("", tasks.index),
-    path("add/", tasks.create),
-    path("<int:id>/", tasks.detail),
-    path('<int:id>/data/', tasks.adddata),
-    path("<int:id>/edit/", tasks.edit),
-    path("<int:id>/delete/", tasks.delete),
+    path("", tasks.list, name='list'),
+    path("add/", tasks.add, name='add'),
+    path("<int:id>/", tasks.detail, name='detail'),
+    # path('<int:pk>/data/', tasks.adddata),
+    path("<int:id>/edit/", tasks.edit, name='edit'),
+    path("<int:id>/delete/", tasks.delete, name='delete'),
+    #
+    # path('', views.task_list, name='task_list'),
+    # path('add/', views.task_add, name='task_add'),
+    # path('<int:pk>/', views.task_detail, name='task_detail'),
+    # path('<int:pk>/edit/', views.task_edit, name='task_edit'),
+    # path('<int:pk>/delete/', views.task_delete, name='task_delete'),
 ]
 urlpatterns = [
     path("", RedirectView.as_view(url='task/', permanent=True)),

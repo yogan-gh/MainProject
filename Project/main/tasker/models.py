@@ -2,19 +2,19 @@ from django.db import models
 
 # Create your models here.
 def get_default_status():
-    return TaskStatus.objects.get_or_create(status='Зарегистрирован')[0].id
+    return TaskStatus.objects.get_or_create(status='Новый')[0].id
 
 class Users(models.Model):
     user_number = models.IntegerField()
     abbreviation = models.CharField()
     def __str__(self):
-        return str(self.user_number)
+        return f"{self.user_number} ({self.abbreviation})"
 
 class TaskSubjects(models.Model):
     name = models.CharField()
     synonym = models.CharField()
     def __str__(self):
-        return self.synonym
+        return f"{self.synonym} ({self.name})"
 
 class TaskStatus(models.Model):
     status = models.CharField()

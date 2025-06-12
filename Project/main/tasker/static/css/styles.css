@@ -90,10 +90,13 @@ button, .details-btn, .back-btn {
     color: white;
     border: none;
     padding: 0.5rem 1rem;
+    margin-top: 2px;
     border-radius: 4px;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 button:hover, .details-btn:hover, .back-btn:hover {
@@ -170,7 +173,7 @@ input, select, textarea {
 }
 
 .data-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .data-section h3 {
@@ -203,4 +206,21 @@ input, select, textarea {
 
 .copy-btn:hover svg {
     stroke: #bee5ff;
+}
+.form-control {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+form p {
+    margin-bottom: 1.5rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
 }

@@ -1,0 +1,13 @@
+{% extends "menu.html" %}
+{% block title %}{{ title }}{% endblock title %}
+{% block content %}
+<div class="header-container">
+    <h1>{{ title }}</h1>
+</div>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="details-btn">Сохранить</button>
+    <a href="../" class="back-btn">Отмена</a>
+</form>
+{% endblock content %}

@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from django import forms
 from .models import *
 
@@ -16,6 +17,7 @@ class StatusForm(forms.ModelForm):
         model = TaskStatus
         fields = '__all__'
 
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Tasks
@@ -27,14 +29,31 @@ class TaskForm(forms.ModelForm):
             "end_date",
         ]
         widgets = {
-            'start_date': forms.DateInput(attrs={'type': 'date'}),
-            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
             'subject': forms.Select(attrs={'class': 'form-control'}),
             'user': forms.Select(attrs={'class': 'form-control'}),
         }
 
-# Формы для связанных объектов
+        labels = {
+            'user': 'Оператор',
+            'subject': 'Тема задания',
+            'status': 'Статус',
+            'start_date': 'Дата выдачи',
+            'end_date': 'Дата исполнения',
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if not self.instance.pk:
+            today = date.today()
+            self.initial['start_date'] = today
+            self.initial['end_date'] = today + timedelta(days=30)
+
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
+
 class PersonForm(forms.ModelForm):
     class Meta:
         model = Persons

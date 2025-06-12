@@ -1,0 +1,83 @@
+{% extends "menu.html" %}
+{% block title %}Детали задания{% endblock title %}
+{% block content %}
+<div class="task-detail">
+    <div class="task-info">
+        <h2>Основная информация</h2>
+        <div class="info-grid">
+            <div class="info-label">Оператор:</div>
+            <div>{{ task.user }}</div>
+            
+            <div class="info-label">Тема:</div>
+            <div>{{ task.subject }}</div>
+            
+            <div class="info-label">Статус:</div>
+            <div>{{ task.status }}</div>
+            
+            <div class="info-label">Дата выдачи:</div>
+            <div>{{ task.start_date|date:"d.m.Y" }}</div>
+            
+            <div class="info-label">Дата исполнения:</div>
+            <div>{{ task.end_date|date:"d.m.Y" }}</div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+        <a href="edit" class="details-btn">Изменить</a>
+        <a href="delete" class="details-btn" style="background-color: #e74c3c;">Удалить</a>
+        <a href="../" class="back-btn">Назад</a>
+    </div>
+
+    <div class="related-data">
+        <h2>Связанные данные</h2>
+        
+        <div class="data-section">
+            <h3>Связанные лица</h3>
+            <ul>
+                {% for person in task.persons.all %}
+                    <li>{{ person.person }}</li>
+                {% empty %}
+                    <li>Нет связанных лиц</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="data-section">
+            <h3>Аккаунты</h3>
+            <ul>
+                {% for account in task.accounts.all %}
+                    <li>{{ account.account }}</li>
+                {% empty %}
+                    <li>Нет аккаунтов</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="data-section">
+            <h3>Email адреса</h3>
+            <ul>
+                {% for email in task.emails.all %}
+                    <li>{{ email.email }}</li>
+                {% empty %}
+                    <li>Нет email адресов</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="data-section">
+            <h3>Телефонные номера</h3>
+            <ul>
+                {% for number in task.phoneNumbers.all %}
+                    <li>{{ number.number }}</li>
+                {% empty %}
+                    <li>Нет телефонных номеров</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div>
+        <a href="editdata" class="details-btn">Изменить связные данные</a>
+    </div>
+</div>
+{% endblock content %}
