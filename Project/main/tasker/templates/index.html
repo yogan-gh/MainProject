@@ -3,7 +3,7 @@
 {% block content %}
 <div class="header-container">
     <h1 >Список заданий</h1>
-    <a href="create" class="details-btn">Зарегистрировать новое задание</a>
+    <a href="add" class="details-btn">Зарегистрировать новое задание</a>
 </div>
 {% if tasks.count > 0 %}
 <table>
@@ -28,8 +28,8 @@
             <td>{{ task.end_date|date:"d.m.Y" }}</td>
             <td>
                 <a href="{{task.id}}" class="details-btn">Подробнее</a>
-                <a href="edit/{{task.id}}" class="details-btn">Изменить</a>
-                <a href="delete/{{task.id}}" class="details-btn">Удалить</a>
+                <a href="{{task.id}}/edit" class="details-btn">Изменить</a>
+                <a href="{{task.id}}/delete" class="details-btn">Удалить</a>
             </td>
         </tr>
     {% endfor %}
