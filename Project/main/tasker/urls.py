@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.views.generic.base import RedirectView
 from . import views
-from .myviews import settings, tasks
+from .myviews import settings, tasks, task_data
 
 settings_patterns = [
     path('add_user/', settings.add_user, name='add_user'),
@@ -16,7 +16,23 @@ settings_patterns = [
     path('edit_status/<int:status_id>/', settings.edit_status, name='edit_status'),
     path('delete_status/<int:status_id>/', settings.delete_status, name='delete_status'),
 
-    path('', settings.all_view, name='all_data'),
+    path('', settings.all_settings, name='all_settings'),
+]
+
+task_data_patterns = [
+    path('add_person', task_data.add_person, name='add_person'),
+    path('delete_person/<int:person_id>/', task_data.delete_person, name='delete_person'),
+
+    path('add_phone', task_data.add_phone, name='add_phone'),
+    path('delete_phone/<int:phone_id>/', task_data.delete_phone, name='delete_phone'),
+
+    path('add_account', task_data.add_account, name='add_account'),
+    path('delete_account/<int:account_id>/', task_data.delete_account, name='delete_account'),
+
+    path('add_email', task_data.add_email, name='add_email'),
+    path('delete_email/<int:email_id>/', task_data.delete_email, name='delete_email'),
+    
+    path('', task_data.all_data, name='all_data'),
 ]
 
 tasks_patterns = [
