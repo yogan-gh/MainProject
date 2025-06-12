@@ -28,8 +28,7 @@
             <td>{{ task.end_date|date:"d.m.Y" }}</td>
             <td>
                 <a href="{{task.id}}" class="details-btn">Подробнее</a>
-                <a href="{{task.id}}/edit" class="details-btn">Изменить</a>
-                <a href="{{task.id}}/delete" class="details-btn">Удалить</a>
+                <a href="{{task.id}}/delete" class="details-btn" style="background-color: #e74c3c;">Удалить</a>
             </td>
         </tr>
     {% endfor %}
