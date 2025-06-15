@@ -1,4 +1,11 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
+
+def home_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('list')
+    else:
+        return redirect('login')
 
 def stats(request):
     return render(request, "stats.html", {'active_tab': 'stats'})

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 <body>
+    {% if user.is_authenticated %}
     <nav>
         <div class="nav-left">
             <a href="/tasker" class="{% if active_tab == 'index' %}active{% endif %}">Главная</a>
@@ -16,12 +17,28 @@
             <a href="/tasker/feedback" class="{% if active_tab == 'feedback' %}active{% endif %}">Обратная связь</a>
         </div>
         <div class="nav-right">
-            <span class="user-info">Иван Иванов</span>
-            <button class="logout-btn">Выйти</button>
+            <span class="user-info">Пользователь: {{ user.first_name }} ({{ user.last_name }})</span>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Выйти</button>
+            </form>
         </div>
     </nav>
     <div class="container">
         {% block content%}Контент{% endblock content %}
     </div>
+    {% else %}
+    <div class="container" style="max-width: 500px; margin: 2rem auto;">
+        <div class="task-detail">
+            <div class="header-container" style="justify-content: center;">
+                <h1>Вход в систему</h1>
+            </div>
+            <div class="error">
+                Для просмотра данной страницы требуется авторизация.
+            </div>
+            <a href="{% url 'login'%}" class="details-btn" style="display: flex; ">Продолжить</a>
+        </div>
+    </div>
+    {% endif %}
 </body>
 </html>
