@@ -10,8 +10,8 @@ def add(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('list')
+            task = form.save()
+            return redirect('all_data', id=task.id)
     else:
         form = TaskForm()
     return render(request, 'tasks/form.html', {'form': form, 'title': 'Добавить задачу'})
