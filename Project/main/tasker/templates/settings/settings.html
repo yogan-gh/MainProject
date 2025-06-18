@@ -3,36 +3,6 @@
 {% block content %}
 <h1>Настройки</h1>
 <div class="container">
-    <!-- Секция Users -->
-    <div class="section">
-        <h2>Пользователи</h2>
-
-        <table>
-            <tr>
-                <th>Номер</th>
-                <th>Аббревиатура</th>
-                <th>Действия</th>
-            </tr>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.user_number }}</td>
-                <td>{{ user.abbreviation }}</td>
-                <td>
-                    <a href="{% url 'edit_user' user.id %}">Изменить</a>
-                    <a href="{% url 'delete_user' user.id %}" onclick="return confirm('Удалить?')">Удалить</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-
-        <form method="post" action="{% url 'add_user' %}">
-            {% csrf_token %}
-            <input type="number" name="user_number" placeholder="Номер пользователя" required>
-            <input type="text" name="abbreviation" placeholder="Аббревиатура" required>
-            <button type="submit">Добавить</button>
-        </form>
-    </div>
-
     <!-- Секция TaskSubjects -->
     <div class="section">
         <h2>Тематики</h2>

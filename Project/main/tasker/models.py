@@ -1,14 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 def get_default_status():
     return TaskStatus.objects.get_or_create(status='Новый')[0].id
 
-class Users(models.Model):
-    user_number = models.IntegerField()
-    abbreviation = models.CharField()
+class CustomUser(User):
+    class Meta:
+        proxy = True
     def __str__(self):
-        return f"{self.user_number} ({self.abbreviation})"
+        return f"{self.first_name} ({self.username})"
 
 class TaskSubjects(models.Model):
     name = models.CharField()
@@ -42,7 +43,7 @@ class Persons(models.Model):
         return self.person
 
 class Tasks(models.Model):
-    user = models.ForeignKey(Users, on_delete=models.PROTECT)
+    user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     subject = models.ForeignKey(TaskSubjects, on_delete=models.PROTECT)
     status = models.ForeignKey(TaskStatus, on_delete=models.PROTECT, default=get_default_status)
     start_date = models.DateField()

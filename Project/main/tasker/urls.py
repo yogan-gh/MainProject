@@ -4,10 +4,6 @@ from . import views
 from .myviews import settings, tasks, task_data
 
 settings_patterns = [
-    path('add_user/', settings.add_user, name='add_user'),
-    path('edit_user/<int:user_id>/', settings.edit_user, name='edit_user'),
-    path('delete_user/<int:user_id>/', settings.delete_user, name='delete_user'),
-
     path('add_subject/', settings.add_subject, name='add_subject'),
     path('edit_subject/<int:subject_id>/', settings.edit_subject, name='edit_subject'),
     path('delete_subject/<int:subject_id>/', settings.delete_subject, name='delete_subject'),

@@ -1,41 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from ..models import Users, TaskSubjects, TaskStatus
-from ..forms import UserForm, SubjectsForm, StatusForm
+from ..models import TaskSubjects, TaskStatus
+from ..forms import SubjectsForm, StatusForm
 
 def all_settings(request):
     context = {
-        'users': Users.objects.all(),
         'subjects': TaskSubjects.objects.all(),
         'statuses': TaskStatus.objects.all(),
         'active_tab': 'settings'
     }
     return render(request, 'settings/settings.html', context)
-
-def add_user(request):
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('all_settings')
-    else:
-        form = UserForm()
-    return render(request, 'add_user.html', {'form': form})
-
-def edit_user(request, user_id):
-    user = get_object_or_404(Users, pk=user_id)
-    if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect('all_settings')
-    else:
-        form = UserForm(instance=user)
-    return render(request, 'settings/edit.html', {'form': form})
-
-def delete_user(request, user_id):
-    user = get_object_or_404(Users, pk=user_id)
-    user.delete()
-    return redirect('all_settings')
 
 def add_subject(request):
     if request.method == 'POST':
