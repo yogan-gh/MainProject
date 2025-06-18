@@ -1,11 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-def get_default_status():
+def get_default_status_id():
     return TaskStatus.objects.get_or_create(status='new')[0].id
+
+def get_default_status():
+    return TaskStatus.objects.get(status='new')
 def get_process_status():
-    return TaskStatus.objects.get_or_create(status='in_progress')[0].id
+    return TaskStatus.objects.get(status='in_progress')
+def get_review_status():
+    return TaskStatus.objects.get(status='review')
+def get_revision_status():
+    return TaskStatus.objects.get(status='revision')
+def get_complete_status():
+    return TaskStatus.objects.get(status='complete')
+def get_cancel_status():
+    return TaskStatus.objects.get(status='cancel')
 
 class CustomUser(User):
     class Meta:
