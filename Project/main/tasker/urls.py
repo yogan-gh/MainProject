@@ -1,5 +1,4 @@
 from django.urls import path, include
-from django.views.generic.base import RedirectView
 from . import views
 from .myviews import settings, tasks, task_data
 
@@ -26,7 +25,7 @@ task_data_patterns = [
 
     path('add_email', task_data.add_email, name='add_email'),
     path('delete_email/<int:email_id>/', task_data.delete_email, name='delete_email'),
-    
+
     path('', task_data.all_data, name='all_data'),
 ]
 
@@ -37,6 +36,12 @@ tasks_patterns = [
     path('<int:id>/data/', include(task_data_patterns)),
     path("<int:id>/edit/", tasks.edit, name='edit'),
     path("<int:id>/delete/", tasks.delete, name='delete'),
+
+    path("<int:id>/accept/", tasks.accept, name='accept'),
+    path("<int:id>/review/", tasks.review, name='review'),
+    path("<int:id>/revision/", tasks.revision, name='revision'),
+    path("<int:id>/complete/", tasks.complete, name='complete'),
+    path("<int:id>/cancel/", tasks.cancel, name='cancel'),
 ]
 
 urlpatterns = [
