@@ -6,13 +6,26 @@ from .models import *
 class SubjectsForm(forms.ModelForm):
     class Meta:
         model = TaskSubjects
-        fields = '__all__'
+        fields = [
+            'name',
+            "synonym",
+        ]
+
+        labels = {
+            'name': 'Название тематики',
+            'synonym': 'Обозначение',
+
+        }
 
 class StatusForm(forms.ModelForm):
     class Meta:
         model = TaskStatus
-        fields = '__all__'
-
+        fields = [
+            "synonym",
+        ]
+        labels = {
+            'synonym': 'Название статуса',
+        }
 
 class TaskForm(forms.ModelForm):
     class Meta:
