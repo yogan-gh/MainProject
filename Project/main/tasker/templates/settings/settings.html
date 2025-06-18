@@ -18,8 +18,15 @@
                 <td>{{ subject.name }}</td>
                 <td>{{ subject.synonym }}</td>
                 <td>
-                    <a href="{% url 'edit_subject' subject.id %}">Изменить</a>
-                    <a href="{% url 'delete_subject' subject.id %}" onclick="return confirm('Удалить?')">Удалить</a>
+                    <a href="{% url 'edit_subject' subject.id %}" class="details-btn">Изменить</a>
+                    <a
+                        href="{% url 'delete_subject' subject.id %}"
+                        class="details-btn"
+                        onclick="return confirm('Удалить?')"
+                        style="background-color: #e74c3c;"
+                    >
+                        Удалить
+                    </a>
                 </td>
             </tr>
             {% endfor %}
@@ -45,7 +52,7 @@
             </tr>
             {% for status in statuses %}
             <tr>
-                <td>{{ status.status }}</td>
+                <td>{{ status.synonym }}</td>
                 <td>
                     <a href="{% url 'edit_status' status.id %}">Изменить</a>
                     <a href="{% url 'delete_status' status.id %}" onclick="return confirm('Удалить?')">Удалить</a>
