@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 def get_default_status():
-    return TaskStatus.objects.get_or_create(status='Новый')[0].id
+    return TaskStatus.objects.get_or_create(status='new')[0].id
+def get_process_status():
+    return TaskStatus.objects.get_or_create(status='in_progress')[0].id
 
 class CustomUser(User):
     class Meta:
@@ -19,8 +21,9 @@ class TaskSubjects(models.Model):
 
 class TaskStatus(models.Model):
     status = models.CharField()
+    synonym = models.CharField()
     def __str__(self):
-        return self.status
+        return self.synonym
 
 class InternetAccounts(models.Model):
     account = models.CharField()

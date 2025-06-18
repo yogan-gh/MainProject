@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .decorators import *
-from ..models import Tasks
+from ..models import Tasks, get_process_status
 from ..forms import TaskForm
 
 def list(request):
@@ -51,3 +51,9 @@ def delete(request, id):
         task.delete()
         return redirect('list')
     return render(request, 'tasks/confirm_delete.html', {'task': task})
+
+def in_work(request, id):
+    task = get_object_or_404(Tasks, id=id)
+    if task.user == request.user:
+        task.status = get_process_status()
+    return redirect('detail')
