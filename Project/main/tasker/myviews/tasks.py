@@ -1,11 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from .decorators import *
 from ..models import Tasks
 from ..forms import TaskForm
 
 def list(request):
-    tasks = Tasks.objects.all()
-    return render(request, 'index.html', {'tasks': tasks})
+    if request.user.groups.filter(name='main').exists():
+        tasks = Tasks.objects.all()
+    else:
+        tasks = Tasks.objects.filter(user=request.user)
 
+    return render(request, 'index.html', {
+        'tasks': tasks,
+        'active_tab': 'index'
+    })
+
+@in_group('main')
 def add(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -18,8 +27,12 @@ def add(request):
 
 def detail(request, id):
     task = get_object_or_404(Tasks, id=id)
-    return render(request, 'tasks/detail.html', {'task': task})
+    if task.user != request.user and not request.user.groups.filter(name='main').exists():
+        return redirect('list')
+    else:
+        return render(request, 'tasks/detail.html', {'task': task})
 
+@in_group('main')
 def edit(request, id):
     task = get_object_or_404(Tasks, id=id)
     if request.method == 'POST':
@@ -31,6 +44,7 @@ def edit(request, id):
         form = TaskForm(instance=task)
     return render(request, 'tasks/form.html', {'form': form, 'title': 'Изменить задачу'})
 
+@in_group('main')
 def delete(request, id):
     task = get_object_or_404(Tasks, id=id)
     if request.method == 'POST':

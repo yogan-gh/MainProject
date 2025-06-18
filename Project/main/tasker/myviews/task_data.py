@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from .decorators import *
 from ..models import Tasks, Persons, PhoneNumbers, InternetAccounts, Emails
 from ..forms import PersonForm, PhoneNumberForm, InternetAccountForm, EmailForm
 
-
+@in_group('main')
 def all_data(request, id):
     task = get_object_or_404(Tasks, id=id)
     context = {
@@ -14,6 +15,7 @@ def all_data(request, id):
     }
     return render(request, 'tasks/data.html', context)
 
+@in_group('main')
 def add_person(request, id):
     task = get_object_or_404(Tasks, id=id)
     if request.method == 'POST':
@@ -26,12 +28,14 @@ def add_person(request, id):
         form = PersonForm()
     return render(request, 'add_person', {'form': form})
 
+@in_group('main')
 def delete_person(request, id, person_id):
     task = get_object_or_404(Tasks, id=id)
     person = get_object_or_404(Persons, pk=person_id)
     task.persons.remove(person)
     return redirect('all_data', id=id)
 
+@in_group('main')
 def add_phone(request, id):
     task = get_object_or_404(Tasks, id=id)
     if request.method == 'POST':
@@ -44,12 +48,14 @@ def add_phone(request, id):
         form = PhoneNumberForm()
     return render(request, 'add_phone', {'form': form})
 
+@in_group('main')
 def delete_phone(request, id, phone_id):
     task = get_object_or_404(Tasks, id=id)
     phone = get_object_or_404(PhoneNumbers, pk=phone_id)
     task.phoneNumbers.remove(phone)
     return redirect('all_data', id=id)
 
+@in_group('main')
 def add_account(request, id):
     task = get_object_or_404(Tasks, id=id)
     if request.method == 'POST':
@@ -62,12 +68,14 @@ def add_account(request, id):
         form = InternetAccountForm()
     return render(request, 'add_account', {'form': form})
 
+@in_group('main')
 def delete_account(request, id, account_id):
     task = get_object_or_404(Tasks, id=id)
     account = get_object_or_404(InternetAccounts, pk=account_id)
     task.accounts.remove(account)
     return redirect('all_data', id=id)
 
+@in_group('main')
 def add_email(request, id):
     task = get_object_or_404(Tasks, id=id)
     if request.method == 'POST':
@@ -80,6 +88,7 @@ def add_email(request, id):
         form = EmailForm()
     return render(request, 'add_email', {'form': form})
 
+@in_group('main')
 def delete_email(request, id, email_id):
     task = get_object_or_404(Tasks, id=id)
     email = get_object_or_404(Emails, pk=email_id)

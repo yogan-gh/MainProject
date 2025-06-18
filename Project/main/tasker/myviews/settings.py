@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from .decorators import *
 from ..models import TaskSubjects, TaskStatus
 from ..forms import SubjectsForm, StatusForm
 
+@in_group('main')
 def all_settings(request):
     context = {
         'subjects': TaskSubjects.objects.all(),
@@ -10,6 +12,7 @@ def all_settings(request):
     }
     return render(request, 'settings/settings.html', context)
 
+@in_group('main')
 def add_subject(request):
     if request.method == 'POST':
         form = SubjectsForm(request.POST)
@@ -20,6 +23,7 @@ def add_subject(request):
         form = SubjectsForm()
     return render(request, 'add_subject.html', {'form': form})
 
+@in_group('main')
 def edit_subject(request, subject_id):
     subject = get_object_or_404(TaskSubjects, pk=subject_id)
     if request.method == 'POST':
@@ -31,11 +35,13 @@ def edit_subject(request, subject_id):
         form = SubjectsForm(instance=subject)
     return render(request, 'settings/edit.html', {'form': form})
 
+@in_group('main')
 def delete_subject(request, subject_id):
     subject = get_object_or_404(TaskSubjects, pk=subject_id)
     subject.delete()
     return redirect('all_settings')
 
+@in_group('main')
 def add_status(request):
     if request.method == 'POST':
         form = StatusForm(request.POST)
@@ -46,6 +52,7 @@ def add_status(request):
         form = StatusForm()
     return render(request, 'add_status.html', {'form': form})
 
+@in_group('main')
 def edit_status(request, status_id):
     status = get_object_or_404(TaskStatus, pk=status_id)
     if request.method == 'POST':
@@ -57,6 +64,7 @@ def edit_status(request, status_id):
         form = StatusForm(instance=status)
     return render(request, 'settings/edit.html', {'form': form})
 
+@in_group('main')
 def delete_status(request, status_id):
     status = get_object_or_404(TaskStatus, pk=status_id)
     status.delete()
