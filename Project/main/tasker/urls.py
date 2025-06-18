@@ -42,7 +42,6 @@ tasks_patterns = [
 
 urlpatterns = [
     path("", views.home_redirect, name='home_redirect'),
-    # path("", RedirectView.as_view(url='task/', permanent=True), name="home"),
     path("accounts/", include('django.contrib.auth.urls')),
     path('task/', include(tasks_patterns)),
     path('stats/', views.stats),
