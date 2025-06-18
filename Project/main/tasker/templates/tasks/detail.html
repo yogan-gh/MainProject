@@ -25,11 +25,29 @@
         </div>
     </div>
 
-    <div style="margin-bottom: 2rem;">
-        {% if request.user.groups.all.0.name == 'main' %}
+    <div style="margin-bottom: 1rem;">
+    {% if request.user.groups.all.0.name == 'main' %}
+        {% if status == 'review' %}
+
+        <div style="margin-bottom: 0.5rem;">
+            <a href="complete" class="details-btn">Принять на реализацию</a>
+            <a href="revision" class="details-btn">Отправить на доработку</a>
+        </div>
+        {% endif %}
+        <a href="cancel" class="details-btn">Отменить</a>
         <a href="edit" class="details-btn">Изменить</a>
         <a href="delete" class="details-btn" style="background-color: #e74c3c;">Удалить</a>
+    {% endif %}
+
+    {% if request.user.groups.all.0.name == 'user' %}
+        {% if status == 'new' or status == 'revision' %}
+        <a href="accept" class="details-btn">Принять в работу</a>
         {% endif %}
+
+        {% if status == 'in_progress' %}
+        <a href="review" class="details-btn">Отправить на проверку</a>
+        {% endif %}
+    {% endif %}
     </div>
 
     <div class="related-data">
@@ -39,7 +57,10 @@
             <h3>Связанные лица</h3>
             <ul>
                 {% for person in task.persons.all %}
-                    <li>{{ person.person }}</li>
+                    <li>
+                        <span>{{ person.person }}</span>
+                        {% include "includes/copy_button.html" %}
+                    </li>
                 {% empty %}
                     <li>Нет связанных лиц</li>
                 {% endfor %}
@@ -50,7 +71,10 @@
             <h3>Телефонные номера</h3>
             <ul>
                 {% for number in task.phoneNumbers.all %}
-                    <li>{{ number.numbers }}</li>
+                    <li>
+                        <span>{{ number.numbers }}</span>
+                        {% include "includes/copy_button.html" %}
+                    </li>
                 {% empty %}
                     <li>Нет телефонных номеров</li>
                 {% endfor %}
@@ -61,7 +85,10 @@
             <h3>Аккаунты</h3>
             <ul>
                 {% for account in task.accounts.all %}
-                    <li>{{ account.account }}</li>
+                    <li>
+                        <span>{{ account.account }}</span>
+                        {% include "includes/copy_button.html" %}
+                    </li>
                 {% empty %}
                     <li>Нет аккаунтов</li>
                 {% endfor %}
@@ -72,7 +99,10 @@
             <h3>Email адреса</h3>
             <ul>
                 {% for email in task.emails.all %}
-                    <li>{{ email.email }}</li>
+                    <li>
+                        <span>{{ email.email }}</span>
+                        {% include "includes/copy_button.html" %}
+                    </li>
                 {% empty %}
                     <li>Нет email адресов</li>
                 {% endfor %}
@@ -86,4 +116,23 @@
     </div>
     {% endif %}
 </div>
+<script>
+function copyToClipboard(button) {
+    const textToCopy = button.previousElementSibling.textContent;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
+        button.style.color = '#2ecc71';
+
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.style.color = '';
+        }, 500);
+    }).catch(err => {
+        console.error('Ошибка при копировании: ', err);
+        button.textContent = 'Ошибка';
+        button.style.color = '#e74c3c';
+    });
+}
+</script>
 {% endblock content %}
