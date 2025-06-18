@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .decorators import *
-from ..models import Tasks, get_process_status
+from ..models import *
 from ..forms import TaskForm
 
 def list(request):
@@ -30,7 +30,11 @@ def detail(request, id):
     if task.user != request.user and not request.user.groups.filter(name='main').exists():
         return redirect('list')
     else:
-        return render(request, 'tasks/detail.html', {'task': task})
+        context = {
+            'task': task,
+            'status': task.status.status
+        }
+        return render(request, 'tasks/detail.html', context)
 
 @in_group('main')
 def edit(request, id):
@@ -52,8 +56,37 @@ def delete(request, id):
         return redirect('list')
     return render(request, 'tasks/confirm_delete.html', {'task': task})
 
-def in_work(request, id):
+def accept(request, id):
     task = get_object_or_404(Tasks, id=id)
     if task.user == request.user:
         task.status = get_process_status()
-    return redirect('detail')
+        task.save()
+    return redirect('detail', id=task.id)
+
+def review(request, id):
+    task = get_object_or_404(Tasks, id=id)
+    if task.user == request.user:
+        task.status = get_review_status()
+        task.save()
+    return redirect('detail', id=task.id)
+
+@in_group('main')
+def revision(request, id):
+    task = get_object_or_404(Tasks, id=id)
+    task.status = get_revision_status()
+    task.save()
+    return redirect('detail', id=task.id)
+
+@in_group('main')
+def complete(request, id):
+    task = get_object_or_404(Tasks, id=id)
+    task.status = get_complete_status()
+    task.save()
+    return redirect('detail', id=task.id)
+
+@in_group('main')
+def cancel(request, id):
+    task = get_object_or_404(Tasks, id=id)
+    task.status = get_cancel_status()
+    task.save()
+    return redirect('detail', id=task.id)
