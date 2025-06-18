@@ -10,7 +10,6 @@ settings_patterns = [
 
     path('add_status/', settings.add_status, name='add_status'),
     path('edit_status/<int:status_id>/', settings.edit_status, name='edit_status'),
-    path('delete_status/<int:status_id>/', settings.delete_status, name='delete_status'),
 
     path('', settings.all_settings, name='all_settings'),
 ]

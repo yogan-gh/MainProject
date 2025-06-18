@@ -63,9 +63,3 @@ def edit_status(request, status_id):
     else:
         form = StatusForm(instance=status)
     return render(request, 'settings/edit.html', {'form': form})
-
-@in_group('main')
-def delete_status(request, status_id):
-    status = get_object_or_404(TaskStatus, pk=status_id)
-    status.delete()
-    return redirect('all_settings')

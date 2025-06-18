@@ -54,8 +54,7 @@
             <tr>
                 <td>{{ status.synonym }}</td>
                 <td>
-                    <a href="{% url 'edit_status' status.id %}">Изменить</a>
-                    <a href="{% url 'delete_status' status.id %}" onclick="return confirm('Удалить?')">Удалить</a>
+                    <a href="{% url 'edit_status' status.id %}" class="details-btn">Изменить</a>
                 </td>
             </tr>
             {% endfor %}
