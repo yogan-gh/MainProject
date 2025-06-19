@@ -25,8 +25,8 @@
         </div>
     </div>
 
-    <div class="data-section">
-        <h3>Прикрепленные файлы</h3>
+<!--    <div class="data-section">-->
+<!--        <h3>Прикрепленные файлы</h3>-->
         {% if task.file %}
             <div style="margin-bottom: 1rem;">
                 <a href="{% url 'download_file' task.id %}" class="details-btn" download>
@@ -35,11 +35,16 @@
                 <span>{{ task.file_name }}</span>
             </div>
         {% else %}
-            <p>Файлы не прикреплены</p>
+<!--            <p>Файлы не прикреплены</p>-->
         {% endif %}
 
         {% if request.user.groups.all.0.name == 'main' or request.user == task.user %}
-        <form method="post" enctype="multipart/form-data" action="{% url 'upload_file' task.id %}">
+        <form
+                method="post"
+                enctype="multipart/form-data"
+                action="{% url 'upload_file' task.id %}"
+                style="padding: 0rem; margin-bottom: 0.5rem;"
+        >
             {% csrf_token %}
             <input type="file" name="file" id="file" style="margin-bottom: 0.5rem;">
             <button type="submit" class="details-btn">Загрузить файл</button>
@@ -50,7 +55,7 @@
             {% endif %}
         </form>
         {% endif %}
-    </div>
+<!--    </div>-->
 
     <div style="margin-bottom: 1rem;">
     {% if request.user.groups.all.0.name == 'main' %}
