@@ -25,6 +25,33 @@
         </div>
     </div>
 
+    <div class="data-section">
+        <h3>Прикрепленные файлы</h3>
+        {% if task.file %}
+            <div style="margin-bottom: 1rem;">
+                <a href="{% url 'download_file' task.id %}" class="details-btn" download>
+                    Скачать файл
+                </a>
+                <span>{{ task.file_name }}</span>
+            </div>
+        {% else %}
+            <p>Файлы не прикреплены</p>
+        {% endif %}
+
+        {% if request.user.groups.all.0.name == 'main' or request.user == task.user %}
+        <form method="post" enctype="multipart/form-data" action="{% url 'upload_file' task.id %}">
+            {% csrf_token %}
+            <input type="file" name="file" id="file" style="margin-bottom: 0.5rem;">
+            <button type="submit" class="details-btn">Загрузить файл</button>
+            {% if task.file %}
+                <button type="submit" name="delete_file" class="details-btn" style="background-color: #e74c3c;">
+                    Удалить файл
+                </button>
+            {% endif %}
+        </form>
+        {% endif %}
+    </div>
+
     <div style="margin-bottom: 1rem;">
     {% if request.user.groups.all.0.name == 'main' %}
         {% if status == 'review' %}

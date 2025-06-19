@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import FileResponse, Http404
 from .decorators import *
 from ..models import *
 from ..forms import TaskForm
@@ -89,4 +90,31 @@ def cancel(request, id):
     task = get_object_or_404(Tasks, id=id)
     task.status = get_cancel_status()
     task.save()
+    return redirect('detail', id=task.id)
+
+def download_file(request, id):
+    task = get_object_or_404(Tasks, id=id)
+    if task.file:
+        response = FileResponse(task.file.open(), as_attachment=True)
+        response['Content-Disposition'] = f'attachment; filename="{task.file_name}"'
+        return response
+    raise Http404("Файл не найден")
+
+def upload_file(request, id):
+    task = get_object_or_404(Tasks, id=id)
+    if request.method == 'POST':
+        if 'delete_file' in request.POST and task.file:
+            # Удаление существующего файла
+            task.file.delete()
+            task.file_name = None
+            task.save()
+        elif 'file' in request.FILES:
+            # Загрузка нового файла
+            if task.file:
+                task.file.delete()  # Удаляем старый файл
+            file = request.FILES['file']
+            task.file = file
+            task.file_name = file.name
+            task.save()
+        return redirect('detail', id=task.id)
     return redirect('detail', id=task.id)

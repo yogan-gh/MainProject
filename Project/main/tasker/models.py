@@ -65,5 +65,19 @@ class Tasks(models.Model):
     phoneNumbers = models.ManyToManyField(PhoneNumbers)
     accounts = models.ManyToManyField(InternetAccounts)
     emails = models.ManyToManyField(Emails)
+
+    file = models.FileField(upload_to='task_files/', blank=True, null=True, verbose_name="Прикрепленный файл")
+    file_name = models.CharField(max_length=255, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.file and not self.file_name:
+            self.file_name = self.file.name
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.file:
+            self.file.delete()
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return f"Task to {self.user}"

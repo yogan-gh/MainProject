@@ -126,3 +126,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/tasker/accounts/login'
 LOGIN_REDIRECT_URL = '/tasker'
 LOGOUT_REDIRECT_URL = '/tasker/accounts/login'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Максимальный размер загружаемого файла (10MB)
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760
