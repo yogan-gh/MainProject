@@ -16,7 +16,9 @@
             <a href="/tasker/stats" class="{% if active_tab == 'stats' %}active{% endif %}">Статистика</a>
             <a href="/tasker/settings" class="{% if active_tab == 'settings' %}active{% endif %}">Настройки</a>
             {% endif %}
+            {% if user.is_superuser %}
             <a href="/tasker/feedback" class="{% if active_tab == 'feedback' %}active{% endif %}">Обратная связь</a>
+            {% endif %}
         </div>
         <div class="nav-right">
             <span class="user-info">Пользователь{% if request.user.groups.all.0.name == 'main' %} (main){% endif %}: {{ user.username }} ({{ user.first_name }})</span>
