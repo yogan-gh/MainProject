@@ -22,51 +22,57 @@
             
             <div class="info-label">Дата исполнения:</div>
             <div>{{ task.end_date|date:"d.m.Y" }}</div>
+
+            {% if task.file %}
+
+            <div class="info-label">Файл:</div>
+
+            <div>
+
+                <span>{{ task.file_name }}</span>
+                <a href="{% url 'download_file' task.id %}" download title="Скачать файл">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3498db" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </a>
+            </div>
+            {% endif %}
         </div>
     </div>
-
-<!--    <div class="data-section">-->
-<!--        <h3>Прикрепленные файлы</h3>-->
-        {% if task.file %}
-            <div style="margin-bottom: 1rem;">
-                <a href="{% url 'download_file' task.id %}" class="details-btn" download>
-                    Скачать файл
-                </a>
-                <span>{{ task.file_name }}</span>
-            </div>
-        {% else %}
-<!--            <p>Файлы не прикреплены</p>-->
-        {% endif %}
-
-        {% if request.user.groups.all.0.name == 'main' or request.user == task.user %}
-        <form
-                method="post"
-                enctype="multipart/form-data"
-                action="{% url 'upload_file' task.id %}"
-                style="padding: 0rem; margin-bottom: 0.5rem;"
-        >
-            {% csrf_token %}
-            <input type="file" name="file" id="file" style="margin-bottom: 0.5rem;">
-            <button type="submit" class="details-btn">Загрузить файл</button>
-            {% if task.file %}
-                <button type="submit" name="delete_file" class="details-btn" style="background-color: #e74c3c;">
-                    Удалить файл
+        {% if status == 'in_progress' and request.user == task.user or status == 'review' and request.user.groups.all.0.name == 'main' %}
+            <form
+                    method="post"
+                    enctype="multipart/form-data"
+                    action="{% url 'upload_file' task.id %}"
+                    style="padding: 0rem; margin-bottom: 0.5rem;"
+            >
+                {% csrf_token %}
+                <input type="file" name="file" id="file" style="margin-bottom: 0.5rem;">
+                <button type="submit" class="details-btn">
+                    {% if task.file %}
+                    Обновить файл
+                    {% else %}
+                    Загрузить файл
+                    {% endif %}
                 </button>
-            {% endif %}
-        </form>
+                {% if task.file %}
+                    <button type="submit" name="delete_file" class="details-btn" style="background-color: #e74c3c;">
+                        Удалить файл
+                    </button>
+                {% endif %}
+            </form>
         {% endif %}
-<!--    </div>-->
 
     <div style="margin-bottom: 1rem;">
     {% if request.user.groups.all.0.name == 'main' %}
         {% if status == 'review' %}
 
-        <div style="margin-bottom: 0.5rem;">
-            <a href="complete" class="details-btn">Принять на реализацию</a>
-            <a href="revision" class="details-btn">Отправить на доработку</a>
-        </div>
+        <a href="complete" class="details-btn">Принять</a>
+        <a href="revision" class="details-btn">На доработку</a>
         {% endif %}
-        <a href="cancel" class="details-btn">Отменить</a>
+        <!-- <a href="cancel" class="details-btn">Отменить</a> -->
         <a href="edit" class="details-btn">Изменить</a>
         <a href="delete" class="details-btn" style="background-color: #e74c3c;">Удалить</a>
     {% endif %}
