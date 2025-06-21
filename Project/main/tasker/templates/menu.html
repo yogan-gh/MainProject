@@ -12,8 +12,8 @@
     <nav>
         <div class="nav-left">
             <a href="/tasker" class="{% if active_tab == 'index' %}active{% endif %}">Главная</a>
-            {% if request.user.groups.all.0.name == 'main' %}
             <a href="/tasker/stats" class="{% if active_tab == 'stats' %}active{% endif %}">Статистика</a>
+            {% if request.user.groups.all.0.name == 'main' %}
             <a href="/tasker/settings" class="{% if active_tab == 'settings' %}active{% endif %}">Настройки</a>
             {% endif %}
             {% if user.is_superuser %}

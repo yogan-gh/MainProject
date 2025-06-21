@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 from .myviews import decorators
 
 def home_redirect(request):
@@ -8,7 +9,7 @@ def home_redirect(request):
     else:
         return redirect('login')
 
-@decorators.in_group('main')
+@login_required
 def stats(request):
     return render(request, "stats.html", {'active_tab': 'stats'})
 
@@ -16,5 +17,6 @@ def stats(request):
 def settings(request):
     return render(request, "settings.html", {'active_tab': 'settings'})
 
+@login_required
 def feedback(request):
     return render(request, "feedback.html", {'active_tab': 'feedback'})

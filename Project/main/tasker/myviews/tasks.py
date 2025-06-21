@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, Http404
 from django.db.models import Case, When, IntegerField
+from django.contrib.auth.decorators import login_required
 from .decorators import *
 from ..models import *
 from ..forms import TaskForm
 
+@login_required
 def list(request):
     if request.user.groups.filter(name='main').exists():
         tasks = Tasks.objects.select_related('status', 'user').annotate(
@@ -49,10 +51,11 @@ def add(request):
         form = TaskForm()
     return render(request, 'tasks/form.html', {'form': form, 'title': 'Добавить задачу'})
 
+@login_required
 def detail(request, id):
     task = get_object_or_404(Tasks, id=id)
     if task.user != request.user and not request.user.groups.filter(name='main').exists():
-        return redirect('list')
+        raise Http404()
     else:
         context = {
             'task': task,
@@ -80,6 +83,7 @@ def delete(request, id):
         return redirect('list')
     return render(request, 'tasks/confirm_delete.html', {'task': task})
 
+@login_required
 def accept(request, id):
     task = get_object_or_404(Tasks, id=id)
     if task.user == request.user:
@@ -87,6 +91,7 @@ def accept(request, id):
         task.save()
     return redirect('detail', id=task.id)
 
+@login_required
 def review(request, id):
     task = get_object_or_404(Tasks, id=id)
     if task.user == request.user:
@@ -115,6 +120,7 @@ def cancel(request, id):
     task.save()
     return redirect('detail', id=task.id)
 
+@login_required
 def download_file(request, id):
     task = get_object_or_404(Tasks, id=id)
     if task.file:
@@ -123,6 +129,7 @@ def download_file(request, id):
         return response
     raise Http404("Файл не найден")
 
+@login_required
 def upload_file(request, id):
     task = get_object_or_404(Tasks, id=id)
     if request.method == 'POST':
