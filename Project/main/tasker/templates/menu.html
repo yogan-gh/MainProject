@@ -21,7 +21,7 @@
             {% endif %}
         </div>
         <div class="nav-right">
-            <span class="user-info">Пользователь{% if request.user.groups.all.0.name == 'main' %} (main){% endif %}: {{ user.first_name }} ({{ user.username }})</span>
+            <span class="user-info">Пользователь: {% if request.user.groups.all.0.name == 'main' %}<b>{% endif %}{{ user.first_name }} ({{ user.username }})</b></span>
             <form action="{% url 'logout' %}" method="post" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit" class="logout-btn">Выйти</button>
