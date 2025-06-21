@@ -51,7 +51,7 @@ urlpatterns = [
     path("", views.home_redirect, name='home_redirect'),
     path("accounts/", include('django.contrib.auth.urls')),
     path('task/', include(tasks_patterns)),
-    path('stats/', views.stats),
+    path('stats/', views.stats_view, name='stats'),
     path('settings/', include(settings_patterns)),
     path('feedback/', views.feedback),
 ]

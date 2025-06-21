@@ -1,28 +1,98 @@
 {% extends "menu.html" %}
-{% block title %}Tasker{% endblock title %}
+{% block title %}Статистика заданий{% endblock title %}
 {% block content %}
-<h1>Статистика</h1>
-<label>Период:</label>
-<div class="date-range">
-    <input type="date">
-    <span>-</span>
-    <input type="date">
-</div>
-<div class="stats-cards">
-    <div class="card">
-        <h3>Получено</h3>
-        <br>
-        <p>24</p>
+<div class="container">
+    <h1>Статистика заданий</h1>
+
+    <!-- Форма фильтрации -->
+    <form method="get" class="filter-form">
+        <div class="form-row">
+            {% if show_user_filter %}
+            <div class="form-group">
+                <label for="user">Пользователь:</label>
+                <select name="user" id="user" class="form-control">
+                    <option value="all">Все пользователи</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}" {% if selected_user == user.id %}selected{% endif %}>
+                            {{ user }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% else %}
+            <input type="hidden" name="user" value="{{ request.user.id }}">
+            {% endif %}
+
+            <div class="form-group">
+                <label for="date_from">Дата от:</label>
+                <input type="date" name="date_from" id="date_from"
+                       value="{{ date_from }}" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="date_to">Дата до:</label>
+                <input type="date" name="date_to" id="date_to"
+                       value="{{ date_to }}" class="form-control">
+            </div>
+
+            <div class="form-group" style="padding-bottom: 16px;">
+                <button type="submit" class="details-btn">Применить</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Информация о примененных фильтрах -->
+    {% if filter_info %}
+    <div class="filter-info">
+        <h3>Примененные фильтры:</h3>
+        <ul>
+
+            {% if filter_info.user %}
+                <li>Пользователь: <strong>{{ filter_info.user }}</strong></li>
+            {% else %}
+                <li>Пользователь: <strong>Все пользователи</strong></li>
+            {% endif %}
+
+            {% if filter_info.date_from or filter_info.date_to %}
+                <li>Период:
+                    <strong>
+                        {% if filter_info.date_from %}{{ filter_info.date_from }}{% else %}...{% endif %}
+                        -
+                        {% if filter_info.date_to %}{{ filter_info.date_to }}{% else %}...{% endif %}
+                    </strong>
+                </li>
+            {% endif %}
+        </ul>
     </div>
-    <div class="card">
-        <h3>Выполнено</h3>
-        <br>
-        <p>18</p>
-    </div>
-    <div class="card">
-        <h3>Не выполнено</h3>
-        <br>
-        <p>6</p>
+    {% endif %}
+
+    <!-- Таблица статистики -->
+    <div class="stats-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Статус задания</th>
+                    <th>Количество</th>
+                    <th>Процент</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in status_stats %}
+                <tr>
+                    <td>{{ stat.status__synonym }}</td>
+                    <td>{{ stat.count }}</td>
+                    <td>
+                        {{ stat.percentage|floatformat:0 }}%
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td><strong>Всего:</strong></td>
+                    <td><strong>{{ total_tasks }}</strong></td>
+                    <td><strong>100%</strong></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock content %}
