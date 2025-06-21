@@ -1,14 +1,37 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, Http404
+from django.db.models import Case, When, IntegerField
 from .decorators import *
 from ..models import *
 from ..forms import TaskForm
 
 def list(request):
     if request.user.groups.filter(name='main').exists():
-        tasks = Tasks.objects.all()
+        tasks = Tasks.objects.select_related('status', 'user').annotate(
+            status_order=Case(
+                When(status=get_review_status(), then=1),
+                When(status=get_new_status(), then=2),
+                When(status=get_revision_status(), then=3),
+                When(status=get_process_status(), then=4),
+                When(status=get_complete_status(), then=5),
+                When(status=get_cancel_status(), then=6),
+                default=7,
+                output_field=IntegerField(),
+            )
+        ).order_by('status_order', '-start_date')
     else:
-        tasks = Tasks.objects.filter(user=request.user)
+        tasks = Tasks.objects.filter(user=request.user).select_related('status', 'user').annotate(
+            status_order=Case(
+                When(status=get_new_status(), then=1),
+                When(status=get_revision_status(), then=2),
+                When(status=get_process_status(), then=3),
+                When(status=get_review_status(), then=4),
+                When(status=get_complete_status(), then=5),
+                When(status=get_cancel_status(), then=6),
+                default=7,
+                output_field=IntegerField(),
+            )
+        ).order_by('status_order', '-start_date')
 
     return render(request, 'index.html', {
         'tasks': tasks,

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 def get_default_status_id():
     return TaskStatus.objects.get_or_create(status='new')[0].id
 
-def get_default_status():
+def get_new_status():
     return TaskStatus.objects.get(status='new')
 def get_process_status():
     return TaskStatus.objects.get(status='in_progress')
@@ -58,7 +58,7 @@ class Persons(models.Model):
 class Tasks(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     subject = models.ForeignKey(TaskSubjects, on_delete=models.PROTECT)
-    status = models.ForeignKey(TaskStatus, on_delete=models.PROTECT, default=get_default_status)
+    status = models.ForeignKey(TaskStatus, on_delete=models.PROTECT, default=get_new_status)
     start_date = models.DateField()
     end_date = models.DateField()
     persons = models.ManyToManyField(Persons)

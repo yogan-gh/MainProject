@@ -27,6 +27,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='tasks',
             name='status',
-            field=models.ForeignKey(default=tasker.models.get_default_status, on_delete=django.db.models.deletion.PROTECT, to='tasker.taskstatus'),
+            field=models.ForeignKey(default=tasker.models.get_new_status, on_delete=django.db.models.deletion.PROTECT, to='tasker.taskstatus'),
         ),
     ]

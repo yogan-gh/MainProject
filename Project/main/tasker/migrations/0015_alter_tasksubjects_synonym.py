@@ -7,8 +7,8 @@ def add_default_statuses(apps, schema_editor):
     default_statuses = [
         {"synonym": "Новое", "status": "new"},
         {"synonym": "В работе", "status": "in_progress"},
-        {"synonym": "На проверке", "status": "review"},
-        {"synonym": "Требует доработки", "status": "revision"},
+        {"synonym": "Проверка", "status": "review"},
+        {"synonym": "Доработка", "status": "revision"},
         {"synonym": "Завершено", "status": "complete"},
         {"synonym": "Отменено", "status": "cancel"},
     ]
