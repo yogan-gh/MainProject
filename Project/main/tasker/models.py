@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import FileExtensionValidator
 
 def get_default_status_id():
     return TaskStatus.objects.get_or_create(status='new')[0].id
@@ -66,7 +67,12 @@ class Tasks(models.Model):
     accounts = models.ManyToManyField(InternetAccounts)
     emails = models.ManyToManyField(Emails)
 
-    file = models.FileField(upload_to='task_files/', blank=True, null=True, verbose_name="Прикрепленный файл")
+    file = models.FileField(
+        upload_to='task_files/',
+        blank=True,
+        null=True,
+        verbose_name="Прикрепленный файл",
+        validators=[FileExtensionValidator(allowed_extensions=['doc', 'docx', 'pdf'])])
     file_name = models.CharField(max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):

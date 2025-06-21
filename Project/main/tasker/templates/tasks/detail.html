@@ -49,7 +49,7 @@
                     style="padding: 0rem; margin-bottom: 0.5rem;"
             >
                 {% csrf_token %}
-                <input type="file" name="file" id="file" style="margin-bottom: 0.5rem;">
+                <input type="file" name="file" id="file" style="margin-bottom: 0.5rem;" accept=".doc,.docx,.pdf" required>
                 <button type="submit" class="details-btn">
                     {% if task.file %}
                     Обновить файл

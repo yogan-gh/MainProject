@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, Http404
 from django.db.models import Case, When, IntegerField
 from django.contrib.auth.decorators import login_required
+from urllib.parse import quote
 from .decorators import *
 from ..models import *
 from ..forms import TaskForm
@@ -124,8 +125,10 @@ def cancel(request, id):
 def download_file(request, id):
     task = get_object_or_404(Tasks, id=id)
     if task.file:
-        response = FileResponse(task.file.open(), as_attachment=True)
-        response['Content-Disposition'] = f'attachment; filename="{task.file_name}"'
+        file = task.file.open()
+        filename = task.file_name
+        response = FileResponse(file)
+        response['Content-Disposition'] = f'attachment; filename*=UTF-8\'\'{quote(filename)}'
         return response
     raise Http404("Файл не найден")
 
