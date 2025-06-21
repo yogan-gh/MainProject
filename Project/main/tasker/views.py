@@ -19,7 +19,10 @@ def stats_view(request):
     user_id = request.GET.get('user', 'all')
     date_from = request.GET.get('date_from')
     date_to = request.GET.get('date_to')
-    users = Group.objects.get(name='user').user_set.filter(is_superuser=False)
+    users = CustomUser.objects.filter(
+        groups__name='user',
+        is_superuser=False
+    ).distinct()
 
     filter_info = {}
 
@@ -81,7 +84,8 @@ def stats_view(request):
         'date_from': date_from.strftime('%Y-%m-%d') if date_from else '',
         'date_to': date_to.strftime('%Y-%m-%d') if date_to else '',
         'total_tasks': total_tasks,
-        'filter_info': filter_info
+        'filter_info': filter_info,
+        'active_tab': 'stats'
     }
     return render(request, 'stats.html', context)
 

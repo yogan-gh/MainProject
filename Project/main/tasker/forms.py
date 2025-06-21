@@ -55,8 +55,10 @@ class TaskForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        editors_group = Group.objects.get(name='user')  # Замените 'Editors' на нужную группу
-        self.fields['user'].queryset = editors_group.user_set.all()
+        self.fields['user'].queryset = CustomUser.objects.filter(
+            groups__name='user',
+            is_superuser=False
+        ).distinct()
 
         if not self.instance.pk:
             today = date.today()
