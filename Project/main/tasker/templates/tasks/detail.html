@@ -157,20 +157,26 @@
 <script>
 function copyToClipboard(button) {
     const textToCopy = button.previousElementSibling.textContent;
-    navigator.clipboard.writeText(textToCopy).then(() => {
-        const originalHTML = button.innerHTML;
-        button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
-        button.style.color = '#2ecc71';
 
-        setTimeout(() => {
-            button.innerHTML = originalHTML;
-            button.style.color = '';
-        }, 500);
-    }).catch(err => {
-        console.error('Ошибка при копировании: ', err);
-        button.textContent = 'Ошибка';
-        button.style.color = '#e74c3c';
-    });
+    // Fallback для браузеров без navigator.clipboard
+    if (!navigator.clipboard) {
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            document.execCommand('copy');
+
+        } catch (err) {
+
+        } finally {
+            document.body.removeChild(textarea);
+        }
+    } else {
+        // Современный способ (для HTTPS)
+        navigator.clipboard.writeText(textToCopy);
+    }
 }
 </script>
 {% endblock content %}
