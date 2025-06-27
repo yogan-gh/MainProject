@@ -124,6 +124,8 @@ def cancel(request, id):
 @login_required
 def download_file(request, id):
     task = get_object_or_404(Tasks, id=id)
+    if task.user != request.user and not request.user.groups.filter(name='main').exists():
+        raise Http404()
     if task.file:
         file = task.file.open()
         filename = task.file_name
@@ -133,8 +135,20 @@ def download_file(request, id):
     raise Http404("Файл не найден")
 
 @login_required
+def delete_file(request, id):
+    task = get_object_or_404(Tasks, id=id)
+    if task.user != request.user and not request.user.groups.filter(name='main').exists():
+        raise Http404()
+    task.file.delete()
+    task.file_name = None
+    task.save()
+    return redirect('detail', id=task.id)
+
+@login_required
 def upload_file(request, id):
     task = get_object_or_404(Tasks, id=id)
+    if task.user != request.user and not request.user.groups.filter(name='main').exists():
+        raise Http404()
     if request.method == 'POST':
         if 'delete_file' in request.POST and task.file:
             # Удаление существующего файла

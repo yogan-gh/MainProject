@@ -45,6 +45,7 @@ tasks_patterns = [
 
     path("<int:id>/download/", tasks.download_file, name='download_file'),
     path("<int:id>/upload/", tasks.upload_file, name='upload_file'),
+    path("<int:id>/deletefile/", tasks.delete_file, name='delete_file'),
 ]
 
 urlpatterns = [
