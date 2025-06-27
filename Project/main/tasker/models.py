@@ -72,7 +72,7 @@ class Tasks(models.Model):
         blank=True,
         null=True,
         verbose_name="Прикрепленный файл",
-        validators=[FileExtensionValidator(allowed_extensions=['doc', 'docx', 'pdf'])])
+        validators=[FileExtensionValidator(allowed_extensions=['doc', 'docx', 'rar', 'zip'])])
     file_name = models.CharField(max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):
